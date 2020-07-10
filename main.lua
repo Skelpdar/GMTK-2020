@@ -2,6 +2,7 @@ AnimLib = require("lib/animation/animation")
 Bump = require("lib/bump/bump")
 Cron = require("lib/cron/cron")
 MGL = require("lib/MGL/src/MGL")
+LoveFrames = require("lib/loveframes")
 
 G_Framerate = 0
 
@@ -19,6 +20,8 @@ end
 -- love.timer.getFPS is also available
 function love.update(dt)
     G_Framerate = 1/dt	
+
+    LoveFrames.update(dt)
 end
 
 function love.draw()
@@ -46,4 +49,30 @@ function love.draw()
     -- To round a number x with a precision delta_x do:
     -- math.floor(x + delta_x / 2)
     love.graphics.print({{1,0,0,1},math.floor(G_Framerate+0.5)}, 0, 0)
+
+    LoveFrames.draw()
+end
+
+function love.mousepressed(x, y, button)
+
+
+    LoveFrames.mousepressed(x, y, button)
+end
+
+function love.mousereleased(x, y, button)
+
+
+    LoveFrames.mousereleased(x, y, button)
+end
+
+function love.keypressed(key, unicode)
+
+
+    LoveFrames.keypressed(key, unicode)
+end
+
+function love.keyreleased(key)
+
+
+    LoveFrames.keyreleased(key)
 end
