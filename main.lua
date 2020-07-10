@@ -1,4 +1,4 @@
-AnimLib = require("lib/animation")
+AnimLib = require("lib/animation/animation")
 Bump = require("lib/bump/bump")
 Cron = require("lib/cron/cron")
 MGL = require("lib/MGL/src/MGL")
