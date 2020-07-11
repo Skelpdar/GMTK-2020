@@ -8,6 +8,7 @@ AnimLib = require("lib/animation/animation")
 Tiles = require("tiles")
 Trains = require("train")
 Switch = require("switch")
+Boxes = require("boxes")
 
 G_Framerate = 0
 
@@ -62,6 +63,8 @@ function love.load()
 
     love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=true})
     love.graphics.setBackgroundColor(19/255, 20/255, 68/255)
+
+	box = Boxes.createBox(5,5,5)	
 end
 
 -- love.update is given the timestep since the last update in seconds
@@ -69,6 +72,7 @@ end
 function love.update(dt)
     G_Framerate = 1/dt	
 
+	Boxes.updateBoxes(dt)
     LoveFrames.update(dt)
 end
 
@@ -83,6 +87,8 @@ function love.draw()
     for key, train in pairs(G_Level.trains) do
         Trains.drawTrain(train)
     end
+
+	Boxes.drawBoxes()
 
     love.graphics.setCanvas()
 
@@ -125,7 +131,6 @@ function love.keypressed(key, unicode)
         for key, train in pairs(G_Level.trains) do
             Trains.move(train, G_Level)
         end
-    end
 
 	-- Check for collisions
 	local prevTrains = {} 
@@ -138,6 +143,7 @@ function love.keypressed(key, unicode)
 		end
 		prevTrains[key] = train
 	end		
+	end
 
     LoveFrames.keypressed(key, unicode)
 end
