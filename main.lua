@@ -14,6 +14,9 @@ G_ScreenHeight = 480
 function love.load()
     G_screenCanvas = love.graphics.newCanvas(640,480)
 
+	local level = require("levels/level1")
+
+	tiles.loadLevel(level)
 	tiles.loadRailSprites()
 
     love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=true})

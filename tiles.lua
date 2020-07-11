@@ -12,20 +12,17 @@
 
 local M = {}
 
+-- Well, holds the sprites for the rails
 local rail_sprites = {}
 
-local example_tracks_tileset = {{25, 24,0 , 0     },
-								 {0,   14, 0,  0     },
-								{0, 0    , 135, 25},
-								 {25, 26,0 , 0      }}
+function M.loadLevel(level)
+	M.rails = level.rails
+	M.width = level.width
+	M.height = level.height
+end		
 
-local example_elements_tileset = {{{},             {}, {},            {}},
-								  {   {},            {},            {}, {}},
-								  {{},             {}, {"switch3-5"}, {}},
-								  {   {"bluetrain"},   {}, {}, {}}}
-
+-- Just loads the sprites for the rails
 function M.loadRailSprites()
-	
 	rail_sprites[13] = love.graphics.newImage("assets/Rail13.png")
 	rail_sprites[25] = love.graphics.newImage("assets/Rail25.png")
 	rail_sprites[1346] = love.graphics.newImage("assets/Rail1346.png")
@@ -49,7 +46,7 @@ end
 -- Takes a tracks tileset as in the above example and renders it
 function M.drawRails(width, height)
 	--love.graphics.draw(rail_sprites[25], 32, 32)	
-	for k, row in pairs(example_tracks_tileset) do
+	for k, row in pairs(M.rails) do
 		for i, tile in pairs(row) do
 			if tile ~= 0 then
 				local x,y = M.tilePos(k,i)		
@@ -59,13 +56,20 @@ function M.drawRails(width, height)
 	end
 end		
 
+-- Returns the upper left corner of a tile (in world coordinates)
 function M.tilePos(k,i)
-	offset = 0	
+	local offset = 0	
 	if math.fmod(k, 2) == 0 then
 		offset = 16	
 	end
 	return i*32+offset, k*27
 
 end		
+
+-- Same as above, but the center of the tile
+function M.tilePosCenter(k,i)
+	local x,y = M.tilesPos(k,i)
+	return x+16, y+20
+end
 
 return M
