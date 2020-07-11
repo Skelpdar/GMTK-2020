@@ -4,6 +4,8 @@ Cron = require("lib/cron/cron")
 MGL = require("lib/MGL/src/MGL")
 LoveFrames = require("lib/loveframes")
 
+tiles = require("tiles")
+
 G_Framerate = 0
 
 G_ScreenWidth = 640
@@ -11,6 +13,8 @@ G_ScreenHeight = 480
 
 function love.load()
     G_screenCanvas = love.graphics.newCanvas(640,480)
+
+	tiles.loadRailSprites()
 
     love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=true})
     love.graphics.setBackgroundColor(19/255, 20/255, 68/255)
@@ -30,8 +34,10 @@ function love.draw()
 
     --SetCameraPosition(love, -Camera_x, -Camera_y)
 
+	tiles.drawRails(4,4)
     love.graphics.setCanvas()
-    
+
+
     -- This resets the translation above
     -- so that we can draw GUI in screen space coordinates
     love.graphics.origin()
