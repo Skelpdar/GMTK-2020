@@ -1,32 +1,90 @@
+TileMath = require("tileMath")
+
 local Cargo = {none = 0, blue = 1, purple = 2}
 
-local Railwagon = {cargo = Cargo.none}
+local Export = {}
 
-function Railwagon:new(object, cargoType)
-    object = object or {}
+--[[local function createRailwagon(trainParent, cargoType)
+    local railwagon = {
+        tilePos = trainParent.tilePos,
+        cargo = cargoType
+    }
 
-    setmetatable(object, self)
-    self.__index = self
+    return railwagon
+end]]
 
-    cargoType = cargoType or Cargo.none
-    self.cargo = cargoType
+local function createTrain(levelPos, direction, speed)
+    local train = {
+        levelPos = levelPos or {x = 1, y = 1},
+        tilePos = TileMath.tilePos(levelPos.x, levelPos.y),
+        direction = direction or TileMath.direction.UpLeft,
+        speed = speed or 1, ticks = 0,
+        sprites = {
+            [TileMath.direction.UpLeft] = 
+                love.graphics.newImage("assets/train14.png"),
 
-    return object
-end
+            [TileMath.direction.Left] = 
+                love.graphics.newImage("assets/train25.png"),
 
-local Train = {pos_x = 1, pos_y = 1, direction = 1, wagons = {}, speed = 1}
+            [TileMath.direction.DownLeft] = 
+                love.graphics.newImage("assets/train26.png"),
 
-function Train:new(object, pos_x, pos_y, direction, wagons, speed)
-    object = object or {}
+            [TileMath.direction.DownRight] = 
+                love.graphics.newImage("assets/train14.png"),
+
+            [TileMath.direction.Right] = 
+                love.graphics.newImage("assets/train25.png"),
+
+            [TileMath.direction.UpRight] = 
+                love.graphics.newImage("assets/train26.png"),
+        }
+    }
     
-    setmetatable(object, self)
-    self.__index = self
-
-    self.pos_x = pos_x or 1
-    self.pos_y = pos_y or 1
-    self.direction = direction or 1
-    self.wagons = wagons or {}
-    self.speed = speed or 1
-
-    return object
+    return train
 end
+
+Export.createTrain = createTrain
+
+local function move(train, level)
+    train.ticks = train.ticks + 1
+    if train.ticks ~= train.speed then
+        return train
+    end
+
+    train.ticks = 0
+
+    local positionDelta = TileMath.lvlPosDelta(train.direction)
+    local newLvlPos = {
+        x = train.levelPos.x + positionDelta.x,
+        y = train.levelPos.y + positionDelta.y
+    }
+
+    if TileMath.withinBounds(newLvlPos, level) ~= true then
+        return train
+    end
+
+    train.levelPos  = newLvlPos
+    train.tilePos   =
+        TileMath.tilePos(train.levelPos.x, train.levelPos.y)
+    
+    train.direction = 
+        level.switches[
+            train.levelPos.x][
+                train.levelPos.y][
+                    TileMath.opposite(train.direction)]
+
+    return train
+end
+
+Export.move = move
+
+local function drawTrain(train)
+    love.graphics.draw(
+        train.sprites[train.direction],
+        train.tilePos.x, train.tilePos.y
+    )
+end
+
+Export.drawTrain = drawTrain
+
+return Export

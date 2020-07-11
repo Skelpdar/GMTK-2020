@@ -4,8 +4,9 @@ MGL = require("lib/MGL/src/MGL")
 LoveFrames = require("lib/loveframes")
 
 AnimLib = require("lib/animation/animation")
-Tiles = require("Tiles")
 
+Tiles = require("Tiles")
+Trains = require("train")
 Switch = require("switch")
 
 G_Framerate = 0
@@ -23,20 +24,34 @@ function love.load()
 
         level.switches  = {}
         level.tiles     = {}
+        level.trains    = {}
 
-        for i, row in pairs(levelDescription.rails) do
-            level.switches[i]   = {}
-            level.tiles[i]      = {}
-            for j, railID in pairs(row) do
-                if type(railID) ~= "table" then
-                    level.switches[i][j]    = Tiles.switchMapping[railID]
-                    level.tiles[i][j]       = railID
+        for x = 1, levelDescription.width, 1 do
+            level.switches[x]   = {}
+            level.tiles[x]      = {}
+            for y = 1, levelDescription.height, 1 do
+                local rail = levelDescription.rails[y][x]
+
+                if type(rail.id) ~= "table" then
+                    level.switches[x][y]    = Tiles.switchMapping[rail.id]
+                    level.tiles[x][y]       = rail.id
                 else
-                    level.switches[i][j]    = Tiles.switchMapping[railID[1]][railID[2]]
-                    level.tiles[i][j]       = railID[1]
+                    level.switches[x][y]    = Tiles.switchMapping[rail.id[1]][rail.id[2]]
+                    level.tiles[x][y]       = rail.id[1]
+                end
+                if type(rail.train) ~= "nil" then
+                    table.insert(
+                        level.trains,
+                        Trains.createTrain(
+                            {x = x, y = y}, rail.train.dir, rail.train.speed
+                        )
+                    )
                 end
             end
         end
+
+        level.width     = levelDescription.width
+        level.height    = levelDescription.height
 
         return level
     end		
@@ -64,6 +79,11 @@ function love.draw()
     --SetCameraPosition(love, -Camera_x, -Camera_y)
 
     Tiles.drawRails(G_Level.tiles)
+
+    for key, train in pairs(G_Level.trains) do
+        Trains.drawTrain(train)
+    end
+
     love.graphics.setCanvas()
 
 
@@ -101,6 +121,11 @@ function love.mousereleased(x, y, button)
 end
 
 function love.keypressed(key, unicode)
+    if key == "n" then
+        for key, train in pairs(G_Level.trains) do
+            Trains.move(train, G_Level)
+        end
+    end
 
 
     LoveFrames.keypressed(key, unicode)

@@ -10,7 +10,8 @@
 --
 --]]
 
-Switch = require("switch")
+Switch      = require("switch")
+TileMath    = require("tileMath")
 
 local M = {}
 
@@ -74,11 +75,11 @@ end
 
 -- Takes a tracks tileset as in the above example and renders it
 function M.drawRails(tiles)
-    for k, row in pairs(tiles) do
-        for i, tile in pairs(row) do
+    for x, column in pairs(tiles) do
+        for y, tile in pairs(column) do
             if tile ~= 0 then
-                local x,y = M.tilePos(k,i)		
-                love.graphics.draw(rail_sprites[tile], x, y)
+                local pos = TileMath.tilePos(x, y)
+                love.graphics.draw(rail_sprites[tile], pos.x, pos.y)
             end		
         end		
     end
@@ -86,30 +87,14 @@ end
 
 -- Takes a props tileset as in the above example and renders it
 function M.drawProps()
-    for k, row in pairs(M.props) do
-        for i, tile in pairs(row) do
+    for x, column in pairs(M.props) do
+        for y, tile in pairs(column) do
             if tile ~= 0 then
-                local x,y = M.tilePos(k,i)		
-                love.graphics.draw(prop_sprites[tile], x, y)
+                local pos = TileMath.tilePos(x, y)		
+                love.graphics.draw(prop_sprites[tile], pos.x, pos.y)
             end		
         end		
     end
 end	
-
--- Returns the upper left corner of a tile (in world coordinates)
-function M.tilePos(k,i)
-    local offset = 0	
-    if math.fmod(k, 2) == 0 then
-        offset = 16	
-    end
-    return i*32+offset, k*27
-
-end		
-
--- Same as above, but the center of the tile
-function M.tilePosCenter(k,i)
-    local x,y = M.tilesPos(k,i)
-    return x+16, y+20
-end
 
 return M
