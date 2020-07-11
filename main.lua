@@ -1,10 +1,10 @@
-AnimLib = require("lib/animation/animation")
 Bump = require("lib/bump/bump")
 Cron = require("lib/cron/cron")
 MGL = require("lib/MGL/src/MGL")
 LoveFrames = require("lib/loveframes")
 
-tiles = require("tiles")
+AnimLib = require("lib/animation/animation")
+Tiles = require("Tiles")
 
 G_Framerate = 0
 
@@ -14,10 +14,10 @@ G_ScreenHeight = 480
 function love.load()
     G_screenCanvas = love.graphics.newCanvas(640,480)
 
-	local level = require("levels/level1")
+    local level = require("levels/level1")
 
-	tiles.loadLevel(level)
-	tiles.loadRailSprites()
+    Tiles.loadLevel(level)
+    Tiles.loadRailSprites()
 
     love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=true})
     love.graphics.setBackgroundColor(19/255, 20/255, 68/255)
@@ -37,7 +37,7 @@ function love.draw()
 
     --SetCameraPosition(love, -Camera_x, -Camera_y)
 
-	tiles.drawRails(4,4)
+    Tiles.drawRails(4,4)
     love.graphics.setCanvas()
 
 
