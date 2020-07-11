@@ -5,7 +5,7 @@ LoveFrames = require("lib/loveframes")
 
 AnimLib = require("lib/animation/animation")
 
-Tiles = require("Tiles")
+Tiles = require("tiles")
 Trains = require("train")
 Switch = require("switch")
 
@@ -43,7 +43,7 @@ function love.load()
                     table.insert(
                         level.trains,
                         Trains.createTrain(
-                            {x = x, y = y}, rail.train.dir, rail.train.speed
+                            {x = x, y = y}, rail.train.dir, rail.train.speed, rail.train.trainType
                         )
                     )
                 end
@@ -127,6 +127,17 @@ function love.keypressed(key, unicode)
         end
     end
 
+	-- Check for collisions
+	local prevTrains = {} 
+	for key, train in pairs(G_Level.trains) do
+		for k, prevPos in pairs(prevTrains) do
+			if prevPos.levelPos.x == train.levelPos.x and prevPos.levelPos.y == train.levelPos.y then
+				Trains.disableTrain(G_Level.trains,train)
+				Trains.disableTrain(G_Level.trains,prevPos)
+			end	
+		end
+		prevTrains[key] = train
+	end		
 
     LoveFrames.keypressed(key, unicode)
 end

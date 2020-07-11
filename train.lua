@@ -1,42 +1,34 @@
 TileMath = require("tileMath")
 
-local Cargo = {none = 0, blue = 1, purple = 2}
-
 local Export = {}
 
---[[local function createRailwagon(trainParent, cargoType)
-    local railwagon = {
-        tilePos = trainParent.tilePos,
-        cargo = cargoType
-    }
-
-    return railwagon
-end]]
-
-local function createTrain(levelPos, direction, speed)
+local function createTrain(levelPos, direction, speed, trainType)
+	 	
     local train = {
+		active = true,	
+		trainType = trainType or "engine",	
         levelPos = levelPos or {x = 1, y = 1},
         tilePos = TileMath.tilePos(levelPos.x, levelPos.y),
         direction = direction or TileMath.direction.UpLeft,
         speed = speed or 1, ticks = 0,
         sprites = {
             [TileMath.direction.UpLeft] = 
-                love.graphics.newImage("assets/train14.png"),
+                love.graphics.newImage("assets/Train14.png"),
 
             [TileMath.direction.Left] = 
-                love.graphics.newImage("assets/train25.png"),
+                love.graphics.newImage("assets/Train25.png"),
 
             [TileMath.direction.DownLeft] = 
-                love.graphics.newImage("assets/train26.png"),
+                love.graphics.newImage("assets/Train26.png"),
 
             [TileMath.direction.DownRight] = 
-                love.graphics.newImage("assets/train14.png"),
+                love.graphics.newImage("assets/Train14.png"),
 
             [TileMath.direction.Right] = 
-                love.graphics.newImage("assets/train25.png"),
+                love.graphics.newImage("assets/Train25.png"),
 
             [TileMath.direction.UpRight] = 
-                love.graphics.newImage("assets/train26.png"),
+                love.graphics.newImage("assets/Train26.png"),
         }
     }
     
@@ -46,6 +38,7 @@ end
 Export.createTrain = createTrain
 
 local function move(train, level)
+	if train.active then	
     train.ticks = train.ticks + 1
     if train.ticks ~= train.speed then
         return train
@@ -72,7 +65,7 @@ local function move(train, level)
             train.levelPos.x][
                 train.levelPos.y][
                     TileMath.opposite(train.direction)]
-
+	end
     return train
 end
 
@@ -86,5 +79,18 @@ local function drawTrain(train)
 end
 
 Export.drawTrain = drawTrain
+
+local function disableTrain(allTrains, train)
+	train.active = false	
+
+	for key, otherTrain in pairs(allTrains) do
+		local otherDelta = TileMath.lvlPosDelta(otherTrain.direction)
+		if otherTrain.trainType == "wagon" and otherTrain.levelPos.x + otherDelta.x == train.levelPos.x and otherTrain.levelPos.y + otherDelta.y == train.levelPos.y then
+			disableTrain(allTrains, otherTrain)
+		end		
+	end		
+end
+
+Export.disableTrain = disableTrain
 
 return Export
