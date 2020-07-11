@@ -6,6 +6,8 @@ LoveFrames = require("lib/loveframes")
 AnimLib = require("lib/animation/animation")
 Tiles = require("Tiles")
 
+Switch = require("switch")
+
 G_Framerate = 0
 
 G_ScreenWidth = 640
@@ -14,9 +16,33 @@ G_ScreenHeight = 480
 function love.load()
     G_screenCanvas = love.graphics.newCanvas(640,480)
 
-    local level = require("levels/level1")
+    local levelDescription = require("levels/level1")
 
-    Tiles.loadLevel(level)
+    local function loadLevel(levelDescription)
+        local level = {}
+
+        level.switches  = {}
+        level.tiles     = {}
+
+        for i, row in pairs(levelDescription.rails) do
+            level.switches[i]   = {}
+            level.tiles[i]      = {}
+            for j, railID in pairs(row) do
+                if type(railID) ~= "table" then
+                    level.switches[i][j]    = Tiles.switchMapping[railID]
+                    level.tiles[i][j]       = railID
+                else
+                    level.switches[i][j]    = Tiles.switchMapping[railID[1]][railID[2]]
+                    level.tiles[i][j]       = railID[1]
+                end
+            end
+        end
+
+        return level
+    end		
+
+    G_Level = loadLevel(levelDescription)
+
     Tiles.loadRailSprites()
 
     love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=true})
@@ -37,7 +63,7 @@ function love.draw()
 
     --SetCameraPosition(love, -Camera_x, -Camera_y)
 
-    Tiles.drawRails(4,4)
+    Tiles.drawRails(G_Level.tiles)
     love.graphics.setCanvas()
 
 
