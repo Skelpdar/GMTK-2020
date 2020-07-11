@@ -8,6 +8,8 @@ Tiles = require("Tiles")
 
 Switch = require("switch")
 
+TrainTracer = require("trainTracer")
+
 G_Framerate = 0
 
 G_ScreenWidth = 640
@@ -53,7 +55,7 @@ end
 -- love.timer.getFPS is also available
 function love.update(dt)
     G_Framerate = 1/dt	
-
+    
     LoveFrames.update(dt)
 end
 
@@ -64,6 +66,9 @@ function love.draw()
     --SetCameraPosition(love, -Camera_x, -Camera_y)
 
     Tiles.drawRails(G_Level.tiles)
+
+    TrainTracer:draw()
+
     love.graphics.setCanvas()
 
 
@@ -101,9 +106,47 @@ function love.mousereleased(x, y, button)
 end
 
 function love.keypressed(key, unicode)
+    if key == "up" then
+        TrainTracer:nextSprite()
+    end
+    
+    if key == "down" then
+        TrainTracer:previousSprite()
+    end
+    
+    if key == "w" then
+        TrainTracer.pos.y = TrainTracer.pos.y - TrainTracer.stepSize
+    end
+    
+    if key == "s" then
+        TrainTracer.pos.y = TrainTracer.pos.y + TrainTracer.stepSize
+    end
+    
+    if key == "d" then
+        TrainTracer.pos.x = TrainTracer.pos.x + TrainTracer.stepSize
+    end
+    
+    if key == "a" then
+        TrainTracer.pos.x = TrainTracer.pos.x - TrainTracer.stepSize
+    end
+    
+    if key == "p" then
+        TrainTracer:print()
+    end
+    
+    if key == "o" then
+        TrainTracer:output()
+    end
+    
+        LoveFrames.keypressed(key, unicode)
+end
 
-
-    LoveFrames.keypressed(key, unicode)
+function love.wheelmoved(x, y)
+    if y > 0 then
+        TrainTracer.stepSize = TrainTracer.stepSize + 1
+    elseif y < 0 then
+        TrainTracer.stepSize = TrainTracer.stepSize - 1
+    end
 end
 
 function love.keyreleased(key)

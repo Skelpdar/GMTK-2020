@@ -30,3 +30,4 @@ function Train:new(object, pos_x, pos_y, direction, wagons, speed)
 
     return object
 end
+
