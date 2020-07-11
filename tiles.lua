@@ -1,24 +1,28 @@
---[ This holds the code for our hexagonal levels
+--[[ This holds the code for our hexagonal levels
 --
---]
+--]]
 
---[
+--[[
 --Directions for rails:
 --  1  6
 --2      5
 --  3  4
 --
---]
+--]]
 
 local M = {}
 
 -- Well, holds the sprites for the rails
 local rail_sprites = {}
 
+local prop_sprites = {}
+
 function M.loadLevel(level)
 	M.rails = level.rails
 	M.width = level.width
 	M.height = level.height
+
+	--M.props = level.props
 end		
 
 -- Just loads the sprites for the rails
@@ -43,9 +47,12 @@ function M.loadRailSprites()
 	rail_sprites[46] = love.graphics.newImage("assets/Rail46.png")
 end		
 
+function M.loadPropSprites()
+	prop_sprites.paprica = love.graphics.newImage("assets/props/paprica.png")
+end		
+
 -- Takes a tracks tileset as in the above example and renders it
 function M.drawRails(width, height)
-	--love.graphics.draw(rail_sprites[25], 32, 32)	
 	for k, row in pairs(M.rails) do
 		for i, tile in pairs(row) do
 			if tile ~= 0 then
@@ -55,6 +62,18 @@ function M.drawRails(width, height)
 		end		
 	end
 end		
+
+-- Takes a props tileset as in the above example and renders it
+function M.drawProps(width, height)
+	for k, row in pairs(M.props) do
+		for i, tile in pairs(row) do
+			if tile ~= 0 then
+				local x,y = M.tilePos(k,i)		
+				love.graphics.draw(prop_sprites[tile], x, y)
+			end		
+		end		
+	end
+end	
 
 -- Returns the upper left corner of a tile (in world coordinates)
 function M.tilePos(k,i)
