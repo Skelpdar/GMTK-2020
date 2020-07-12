@@ -150,13 +150,14 @@ local function disableTrain(allTrains, train, level)
 		
 	train.active = false	
 
-	-- Catapult boxes :D
-	--if train.trainType == "wagonloaded" then
-	--	print(train.levelPos.x)
-	--	Boxes.createBox(level, train.levelPos.x, train.levelPos.y, train.direction)
-	--end		
-
+	activetrains = {}
 	for key, otherTrain in pairs(allTrains) do
+			if otherTrain.active == true then
+				activetrains[otherTrain] = otherTrain
+			end
+	end		
+
+	for key, otherTrain in pairs(activetrains) do
 		local otherDelta = TileMath.lvlPosDelta(otherTrain.direction, otherTrain.levelPos)
 		if (otherTrain.trainType == "wagon" or otherTrain.trainType == "wagonloaded") and otherTrain.levelPos.x + otherDelta.x == train.levelPos.x and otherTrain.levelPos.y + otherDelta.y == train.levelPos.y then
 			disableTrain(allTrains, otherTrain)

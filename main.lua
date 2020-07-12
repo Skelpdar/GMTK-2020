@@ -18,19 +18,28 @@ G_ScreenHeight = 480
 
 isInDialogue = true
 
-function love.load()
+function love.load(name)
     G_screenCanvas = love.graphics.newCanvas(640,480)
 
 	G_font = love.graphics.newFont("fonts/Cabin-Regular.ttf", 16)
 
-    local levelDescription = require("levels/level1")
-
-    local function loadLevel(levelDescription)
+    local function loadLevel(name)
+    	local levelDescription = require(name)
         local level = {}
+
+		--Reset boxes
+		Boxes.boxes = {}
 
         level.switches  = {}
         level.tiles     = {}
         level.trains    = {}
+		level.levers    = {}
+
+		if levelDescription.targets then
+			level.targets   = levelDescription.targets
+		else
+			level.targets = {{}}
+		end	
 
         for x = 1, levelDescription.width, 1 do
             level.switches[x]   = {}
@@ -66,7 +75,7 @@ function love.load()
 								toggled = 2
 							end	
 						end	
-						Lever.createLever(level, 40, 0, rail.id, x, y, toggled)
+						table.insert(level.levers, Lever.createLever(level, 40, 0, rail.id, x, y, toggled))
 					end		
 				end		
             end
@@ -79,19 +88,28 @@ function love.load()
 		level.dialogueTimer = levelDescription.dialogueTimer
 		level.dialogue = levelDescription.dialogue
 
+		if #level.dialogue == 0 then
+			isInDialogue = false
+		else
+			isInDialogue = true
+		end	
+
         return level
     end		
 
-    G_Level = loadLevel(levelDescription)
+	G_Level = loadLevel("levels/level1")
+
+	--for key, val in pairs(G_Level.levers) do
+	--		val.button:Remove()
+	--end		
+
+    --G_Level = loadLevel("levels/mainmenu")
 
     Tiles.loadRailSprites()
 
     love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=true})
     love.graphics.setBackgroundColor(19/255, 20/255, 68/255)
 
-	--Temp stuff
-	--box = Boxes.createBox(G_Level, 5,5,5)
-	--Lever.createLever(G_Level, 20, 0, 134, 2, 11, 1)
 end
 
 -- love.update is given the timestep since the last update in seconds
@@ -109,6 +127,8 @@ function love.update(dt)
             end
         end
     end
+
+	
 
 	if isInDialogue == false then
 		Boxes.updateBoxes(dt)
@@ -151,7 +171,7 @@ function love.draw()
     -- math.floor(x + delta_x / 2)
     love.graphics.print({{1,0,0,1},math.floor(G_Framerate+0.5)}, 0, 0)
 
-	if isInDialogue then    
+	if isInDialogue and #G_Level.dialogue > 0 then    
          love.graphics.draw(G_Level.dialogue[G_Level.dialogueProgress][1], 50+90, 50+302)
          love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][3], G_font, 140+90, 75+302, 245)
          love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][2], G_font, 94+90, 139+302, 100)
@@ -175,32 +195,32 @@ end
 
 function love.keypressed(key, unicode)
 	if isInDialogue == false then	
-    if key == "n" then
-        for key, train in pairs(G_Level.trains) do
-            Trains.move(train, G_Level)
-        end
+			if key == "n" then
+				for key, train in pairs(G_Level.trains) do
+					Trains.move(train, G_Level)
+				end
 
-	-- Check for collisions
-	local prevTrains = {} 
-	for key, train in pairs(G_Level.trains) do
-		for k, prevPos in pairs(prevTrains) do
-			if prevPos.levelPos.x == train.levelPos.x and prevPos.levelPos.y == train.levelPos.y then
-				Trains.disableTrain(G_Level.trains,train, G_Level)
-				Trains.disableTrain(G_Level.trains,prevPos,G_Level)
-			end	
-		end
-		prevTrains[key] = train
-	end		
-	end
+			-- Check for collisions
+			local prevTrains = {} 
+			for key, train in pairs(G_Level.trains) do
+				for k, prevPos in pairs(prevTrains) do
+					if prevPos.levelPos.x == train.levelPos.x and prevPos.levelPos.y == train.levelPos.y then
+						Trains.disableTrain(G_Level.trains,train, G_Level)
+						Trains.disableTrain(G_Level.trains,prevPos,G_Level)
+					end	
+				end
+				prevTrains[key] = train
+			end		
+			end
 
-	-- Catapult boxes
-	for key, train in pairs(G_Level.trains) do
-		if train.trainType == "wagonloaded" and train.active == false then
-			Boxes.createBox(G_Level, train.levelPos.x, train.levelPos.y, train.direction)
-			train.trainType = "wagon"
-			Trains.makeWagon(train)	
-		end		
-	end
+			-- Catapult boxes
+			for key, train in pairs(G_Level.trains) do
+				if train.trainType == "wagonloaded" and train.active == false then
+					Boxes.createBox(G_Level, train.levelPos.x, train.levelPos.y, train.direction)
+					train.trainType = "wagon"
+					Trains.makeWagon(train)	
+				end		
+			end
 	end
 
     LoveFrames.keypressed(key, unicode)

@@ -24,6 +24,16 @@ local function createBox(level, tilex,tiley, dir)
 
 	M.boxes[box] = box
 
+	for key,val in pairs(level.targets) do
+		print(val.x)
+		print(val.y)
+		if val.x == box.goalTiles.x and val.y == box.goalTiles.y then
+			val.delivered = true
+			print("HIT TARGET")
+		end		
+	end
+
+
 	return box
 end		
 

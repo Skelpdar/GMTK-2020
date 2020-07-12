@@ -61,6 +61,8 @@ local function createLever(level,x,y,railType,railx, raily, state)
 		end
     end
 
+	return lever
+
 end	
 
 M.createLever = createLever
