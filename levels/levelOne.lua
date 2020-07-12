@@ -12,7 +12,7 @@ world.rails = {{{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id 
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 36, train = {dir = 3, speed = 1, trainType = "engine"}}, {id = 0}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 13}, {id = 13}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 36}, {id = 0}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 36}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 46}, {id = 0}, {id = 46}, {id = 0}, {id = 0}, {id = 0}, {id = 36}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
-{{id = 0}, {id = 0}, {id = 0}, {id = 14}, {id = 0}, {id = 15}, {id = 25}, {id = 235}, {id = 26}, {id = 36}, {id = 0}, {id = 35}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
+{{id = 0}, {id = 0}, {id = 0}, {id = 14}, {id = 0}, {id = 15}, {id = 25}, {id = 235}, {id = 26}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 14}, {id = 0}, {id = 0}, {id = 36}, {id = 0}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 15}, {id = 25}, {id = 256, hasLever = true}, {id = 25}, {id = 26}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
@@ -29,13 +29,13 @@ world.dialogue = {} --[[{{love.graphics.newImage("assets/UI/ui_textbox_01.png"),
                 {love.graphics.newImage("assets/UI/ui_textbox_01.png"), "Boss", "Phaw, I don't believe in middle managment. As my late father used to say: \"The cheapest traffic planning is divine intervention\""}}]]
 
 --Where cargo should land, delivered becomes true when a box lands on it				
-world.targets = {{x = 11, y = 10, delivered=false}}
+world.targets = {{x = 12, y = 10, delivered=false}}
 
 world.nextlevel = "levels/mainmenu"
 
 world.props = {{image = love.graphics.newImage("assets/PropExposedPipe.png"), x = 30, y = 70},
 {image = love.graphics.newImage("assets/PropShroomGuy.png"), x = 130, y = 100},
 {image = love.graphics.newImage("assets/PropLargeExposedPipe.png"), x = 500, y = 100},
-}
+{image = love.graphics.newImage("assets/landing.png"), x = 350, y = 230}}
 
 return world

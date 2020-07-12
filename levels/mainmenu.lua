@@ -28,6 +28,7 @@ world.dialogue = {{love.graphics.newImage("assets/Empty.png"), " ", " "}}
 
 world.nextlevel = "levels/tutorial"
 
-world.props = {}
+world.props = {
+    {image = love.graphics.newImage("assets/landing.png"), x = 180, y = 95}}
 
 return world
