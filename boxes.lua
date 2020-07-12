@@ -20,8 +20,10 @@ local function createBox(level, tilex,tiley, dir)
 
 	local delta = TileMath.lvlPosDelta(dir, {x=tilex, y=tiley})
 	local delta2 = TileMath.lvlPosDelta(dir, {x=tilex+delta.x, y=tiley+delta.y})
+	
 	local delta3 = TileMath.lvlPosDelta(dir, {x=tilex+delta.x+delta2.x, y=tiley+delta.y+delta2.y})
-	box.goalTiles = {x = tilex + delta.x + delta2.x +delta3.x, y = tiley +delta.y+delta2.y+delta3.y}	
+	local delta4 = TileMath.lvlPosDelta(dir, {x=tilex+delta.x+delta2.x+delta3.x, y=tiley+delta.y+delta2.y+delta3.y})
+	box.goalTiles = {x = tilex + delta.x + delta2.x +delta3.x+delta4.x, y = tiley +delta.y+delta2.y+delta3.y+delta4.y}	
 
 	box.image = love.graphics.newImage("assets/box.png")
 
