@@ -8,7 +8,7 @@ M.boxes = {}
 M.airtime = 5
 
 local function createBox(tilex,tiley, dir)
-	box = {}
+	local box = {}
 
 	box.startx = tilex
 	box.starty = tiley

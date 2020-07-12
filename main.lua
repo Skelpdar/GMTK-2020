@@ -9,6 +9,7 @@ Tiles = require("tiles")
 Trains = require("train")
 Switch = require("switch")
 Boxes = require("boxes")
+Lever = require("lever")
 
 G_Framerate = 0
 
@@ -64,7 +65,9 @@ function love.load()
     love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=true})
     love.graphics.setBackgroundColor(19/255, 20/255, 68/255)
 
-	box = Boxes.createBox(5,5,5)	
+	--Temp stuff
+	box = Boxes.createBox(5,5,5)
+	Lever.createLever(G_Level, 0, 0, 135, 1, 1, 0)
 end
 
 -- love.update is given the timestep since the last update in seconds
