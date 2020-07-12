@@ -73,6 +73,27 @@ local function createTrain(levelPos, direction, speed, trainType)
                 love.graphics.newImage("assets/LoadedUpRight.png"),
 		}
 	end	
+	if train.trainType == "barrier" then
+		train.sprites = { 
+					[TileMath.direction.UpLeft] = 
+						love.graphics.newImage("assets/Empty.png"),
+
+					[TileMath.direction.Left] = 
+                        love.graphics.newImage("assets/Empty.png"),
+
+					[TileMath.direction.DownLeft] = 
+						love.graphics.newImage("assets/Empty.png"),
+
+					[TileMath.direction.DownRight] = 
+						love.graphics.newImage("assets/Empty.png"),
+
+					[TileMath.direction.Right] = 
+						love.graphics.newImage("assets/Empty.png"),
+
+					[TileMath.direction.UpRight] = 
+						love.graphics.newImage("assets/Empty.png"),
+		}
+	end
     return train
 end
 
