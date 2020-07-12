@@ -1,5 +1,25 @@
 local M = {}
 
+local function pixelPos(tileX, tileY)
+    local y = tileY / 27
+
+    local pos = {}
+    if math.fmod(y, 2) == 0 then
+        pos = {x = math.floor((tileX - 16) / 32), y = math.floor(y)}
+    else
+        pos = {x = math.floor(tileX / 32), y = math.floor(y)}
+    end
+
+    if pos.x <= 0 then pos.x = 1 end
+    if pos.x > 16 then pos.x = 16 end
+    if pos.y <= 0 then pos.y = 1 end
+    if pos.y > 13 then pos.y = 13 end
+
+    return pos
+end
+
+M.pixelPos = pixelPos
+
 -- Returns the upper left corner of a tile (in world coordinates)
 local function tilePos(x, y)
     local offset = 0
@@ -7,7 +27,6 @@ local function tilePos(x, y)
         offset = 16	
     end
     return {x = x*32 + offset, y = y*27}
-
 end
 
 M.tilePos = tilePos

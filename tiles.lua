@@ -16,9 +16,27 @@ TileMath    = require("tileMath")
 local M = {}
 
 -- Well, holds the sprites for the rails
-local rail_sprites = {}
+M.rail_sprites = {
+    [13] = love.graphics.newImage("assets/Rail13.png"),
+    [14] = love.graphics.newImage("assets/Rail14.png"),
+    [15] = love.graphics.newImage("assets/Rail15.png"),
+    [16] = love.graphics.newImage("assets/Rail16.png"),
+    [24] = love.graphics.newImage("assets/Rail24.png"),
+    [25] = love.graphics.newImage("assets/Rail25.png"),
+    [26] = love.graphics.newImage("assets/Rail26.png"),
+    [34] = love.graphics.newImage("assets/Rail34.png"),
+    [35] = love.graphics.newImage("assets/Rail35.png"),
+    [36] = love.graphics.newImage("assets/Rail36.png"),
+    [46] = love.graphics.newImage("assets/Rail46.png"),
+    [135] = love.graphics.newImage("assets/Rail135.png"),
+    [136] = love.graphics.newImage("assets/Rail136.png"),
+    [146] = love.graphics.newImage("assets/Rail146.png"),
+    [246] = love.graphics.newImage("assets/Rail246.png"),
+    [346] = love.graphics.newImage("assets/Rail346.png"),
+    [1346] = love.graphics.newImage("assets/Rail1346.png"),
+}
 
-local prop_sprites = {}
+M.prop_sprites = {}
 
 M.switchMapping = {
     [13]    = Switch.createSwitch(1, {3}),
@@ -50,27 +68,10 @@ M.switchMapping = {
 
 -- Just loads the sprites for the rails
 function M.loadRailSprites()
-    rail_sprites[13] = love.graphics.newImage("assets/Rail13.png")
-    rail_sprites[14] = love.graphics.newImage("assets/Rail14.png")
-    rail_sprites[15] = love.graphics.newImage("assets/Rail15.png")
-    rail_sprites[16] = love.graphics.newImage("assets/Rail16.png")
-    rail_sprites[24] = love.graphics.newImage("assets/Rail24.png")
-    rail_sprites[25] = love.graphics.newImage("assets/Rail25.png")
-    rail_sprites[26] = love.graphics.newImage("assets/Rail26.png")
-    rail_sprites[34] = love.graphics.newImage("assets/Rail34.png")
-    rail_sprites[35] = love.graphics.newImage("assets/Rail35.png")
-    rail_sprites[36] = love.graphics.newImage("assets/Rail36.png")
-    rail_sprites[46] = love.graphics.newImage("assets/Rail46.png")
-    rail_sprites[135] = love.graphics.newImage("assets/Rail135.png")
-    rail_sprites[136] = love.graphics.newImage("assets/Rail136.png")
-    rail_sprites[146] = love.graphics.newImage("assets/Rail146.png")
-    rail_sprites[246] = love.graphics.newImage("assets/Rail246.png")
-    rail_sprites[346] = love.graphics.newImage("assets/Rail346.png")
-    rail_sprites[1346] = love.graphics.newImage("assets/Rail1346.png")
 end
 
 function M.loadPropSprites()
-    prop_sprites.paprica = love.graphics.newImage("assets/props/paprica.png")
+    M.prop_sprites.paprica = love.graphics.newImage("assets/props/paprica.png")
 end		
 
 -- Takes a tracks tileset as in the above example and renders it
@@ -79,7 +80,7 @@ function M.drawRails(tiles)
         for y, tile in pairs(column) do
             if tile ~= 0 then
                 local pos = TileMath.tilePos(x, y)
-                love.graphics.draw(rail_sprites[tile], pos.x, pos.y)
+                love.graphics.draw(M.rail_sprites[tile], pos.x, pos.y)
             end		
         end		
     end
@@ -91,10 +92,10 @@ function M.drawProps()
         for y, tile in pairs(column) do
             if tile ~= 0 then
                 local pos = TileMath.tilePos(x, y)		
-                love.graphics.draw(prop_sprites[tile], pos.x, pos.y)
+                love.graphics.draw(M.prop_sprites[tile], pos.x, pos.y)
             end		
         end		
     end
-end	
+end
 
 return M
