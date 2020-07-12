@@ -25,6 +25,7 @@ local function loadLevel(name, reloading)
 			reloading = false
         end
 
+
     	local levelDescription = require(name)
         local level = {}
 
@@ -107,7 +108,12 @@ local function loadLevel(name, reloading)
 function love.load(name)
 	if not reloading then
 		reloading = false
-	end		
+	end	
+
+	bgm = love.audio.newSource("audio/Theme_music_1_industrial.wav", "stream")
+	bgm:setLooping(true)
+	bgm:setVolume(0.5)
+	love.audio.play(bgm)
 		
     G_screenCanvas = love.graphics.newCanvas(640,480)
 
@@ -128,6 +134,9 @@ function love.load(name)
 	resetButton:SetWidth(220)
 	resetButton:SetHeight(64)
 	resetButton.OnClick = function(object, x, y)
+		bgm = love.audio.newSource("audio/sfx_gameplay_ui_click_2.wav", "stream")
+		love.audio.play(bgm)
+
 		for key, val in pairs(G_Level.levers) do
 			val.button:Remove()
 			val = nil
@@ -152,6 +161,8 @@ function love.update(dt)
 	if isInDialogue then
         G_Level.dialogueTimer = G_Level.dialogueTimer + dt
         if love.mouse.isDown(1)  and G_Level.dialogueTimer > 0.3 then
+			sfx = love.audio.newSource("audio/sfx_gameplay_ui_click.wav", "stream")
+			sfx:play()	
             G_Level.dialogueProgress = G_Level.dialogueProgress + 1
             G_Level.dialogueTimer = 0
             if G_Level.dialogueProgress > #G_Level.dialogue then
@@ -173,6 +184,9 @@ function love.update(dt)
 			if G_IsChangingLevel == false then
 				G_IsChangingLevel = true
 				G_VictoryTime = 0
+
+				local sfx = love.audio.newSource("audio/sfx-steam-whistle.wav", "stream")
+				love.audio.play(sfx)
 			end		
 			if G_IsChangingLevel == true and G_VictoryTime > 2 then
 				G_Level = loadLevel(G_Level.nextlevel)
