@@ -268,7 +268,7 @@ function Serialise(level)
                     line .. ", train = {dir = " ..
                     level.trains[x][y].direction .. ", speed = " ..
                     level.trains[x][y].speed .. ", trainType = \"" ..
-                    level.trains[x][y].trainType .. "\""
+                    level.trains[x][y].trainType .. "\"}"
             end
 
             line = line .. "}, "
