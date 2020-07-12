@@ -110,6 +110,8 @@ function love.load(name)
 		reloading = false
 	end	
 
+	menuimage = love.graphics.newImage("assets/UI/ui_mainmenu.png")
+
 	bgm = love.audio.newSource("audio/Theme_music_1_industrial.wav", "stream")
 	bgm:setLooping(true)
 	bgm:setVolume(0.5)
@@ -119,7 +121,7 @@ function love.load(name)
 
 	G_font = love.graphics.newFont("fonts/Cabin-Regular.ttf", 16)
 
-    G_Level = loadLevel("levels/level1")
+    G_Level = loadLevel("levels/mainmenu")
 
     Tiles.loadRailSprites()
 
@@ -238,6 +240,9 @@ function love.draw()
     love.graphics.print({{1,0,0,1},math.floor(G_Framerate+0.5)}, 0, 0)
 
 	if isInDialogue and #G_Level.dialogue > 0 then 
+		 if G_Level.name == "levels/mainmenu" then
+			love.graphics.draw(menuimage, 0, 0)
+		 end		 
          love.graphics.draw(G_Level.dialogue[G_Level.dialogueProgress][1], 50+90, 50+302)
          love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][3], G_font, 140+90, 75+302, 245)
          love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][2], G_font, 94+90, 139+302, 100)
