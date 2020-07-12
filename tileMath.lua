@@ -27,24 +27,24 @@ local direction = {
 
 M.direction = direction
 
-local function lvlPosDelta(dir)
+local function lvlPosDelta(dir, position)
     if dir        == direction.UpLeft then
-        return {x   = -1, y = -1}
+        return {x   = -(position.y % 2), y = -1}
 
     elseif dir    == direction.Left then
         return {x   = -1, y = 0}
 
     elseif dir    == direction.DownLeft then
-        return {x   = -1, y = 1}
+        return {x   = -(position.y  % 2), y = 1}
 
     elseif dir    == direction.DownRight then
-        return {x   = 1, y = 1}
+        return {x   = ((position.y + 1)  % 2), y = 1}
 
     elseif dir    == direction.Right then
         return {x   = 1, y = 0}
 
     elseif dir    == direction.UpRight then
-        return {x   = 1, y = -1}
+        return {x   = ((position.y + 1)  % 2), y = -1}
     end
 end
 

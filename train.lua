@@ -67,7 +67,7 @@ local function move(train, level)
 
     train.ticks = 0
 
-    local positionDelta = TileMath.lvlPosDelta(train.direction)
+    local positionDelta = TileMath.lvlPosDelta(train.direction, train.levelPos)
     local newLvlPos = {
         x = train.levelPos.x + positionDelta.x,
         y = train.levelPos.y + positionDelta.y
@@ -105,7 +105,7 @@ local function disableTrain(allTrains, train)
 	train.active = false	
 
 	for key, otherTrain in pairs(allTrains) do
-		local otherDelta = TileMath.lvlPosDelta(otherTrain.direction)
+		local otherDelta = TileMath.lvlPosDelta(otherTrain.direction, otherTrain.levelPos)
 		if otherTrain.trainType == "wagon" and otherTrain.levelPos.x + otherDelta.x == train.levelPos.x and otherTrain.levelPos.y + otherDelta.y == train.levelPos.y then
 			disableTrain(allTrains, otherTrain)
 		end		
