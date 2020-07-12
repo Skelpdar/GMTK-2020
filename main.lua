@@ -18,8 +18,8 @@ G_Level = {}
 G_OutLevel = {}
 
 EditMode = {
-    "Tracks", "Trains", "Levers", "Toggles", "Cars", "Cargo",
-    Tracks = "Tracks", Trains = "Trains", Levers = "Levers", Toggles = "Toggles", Cars = "Cars", Cargo = "Cargo"
+    "Tracks", "Trains", "Levers", "Toggle", "Cars", "Cargo",
+    Tracks = "Tracks", Trains = "Trains", Levers = "Levers", Toggles = "Toggle", Cars = "Cars", Cargo = "Cargo"
 }
 NumModes = 6
 
@@ -36,15 +36,19 @@ function InitLevel(level)
     level.switches  = {}
     level.tiles     = {}
     level.trains    = {}
+    level.levers    = {}
 
     for x = 1, 16, 1 do
         level.switches[x]   = {}
         level.tiles[x]      = {}
-        level.trains[x]      = {}
+        level.trains[x]     = {}
+        level.levers[x]      = {}
+
         for y = 1, 13, 1 do
             level.switches[x][y] = 0
             level.tiles[x][y] = 0
             level.trains[x][y] = 0
+            level.levers[x][y] = 0
         end
     end
 
@@ -227,8 +231,11 @@ function love.mousepressed(x, y, button)
     if button == 1 then
 
         if EditMode[G_Editing] == EditMode.Tracks then
-            G_OutLevel.tiles[G_MousePos.x][G_MousePos.y] = 
+            G_OutLevel.tiles[G_MousePos.x][G_MousePos.y] =
                 G_Level.tileIndicies[G_Level.selectedTile]
+            
+            G_OutLevel.switches[G_MousePos.x][G_MousePos.y] =
+                Tiles.switchMapping[G_Level.tileIndicies[G_Level.selectedTile]]
 
         elseif EditMode[G_Editing] == EditMode.Trains then
             G_OutLevel.trains[G_MousePos.x][G_MousePos.y] =
@@ -239,6 +246,8 @@ function love.mousepressed(x, y, button)
 
         if EditMode[G_Editing] == EditMode.Tracks then
             G_OutLevel.tiles[G_MousePos.x][G_MousePos.y] = 0
+            
+            G_OutLevel.switches[G_MousePos.x][G_MousePos.y] = 0
 
         elseif EditMode[G_Editing] == EditMode.Trains then
             G_OutLevel.trains[G_MousePos.x][G_MousePos.y] = 0
@@ -261,7 +270,15 @@ function Serialise(level)
     for y = 1, 13, 1 do
         line = line .. "{"
         for x = 1, 16, 1 do
-            line = line .. "{id = " .. level.tiles[x][y]
+            if level.tiles[x][y] == 135 then
+                line = line .. "{id = {" .. level.tiles[x][y] .. ", 1}"
+
+            elseif level.tiles[x][y] == 246 then
+                line = line .. "{id = {" .. level.tiles[x][y] .. ", 2}"
+
+            else
+                line = line .. "{id = " .. level.tiles[x][y]
+            end
 
             if level.trains[x][y] ~= 0 then
                 line = 
