@@ -32,6 +32,16 @@ Direction = {
 
 G_Direction = TileMath.direction.UpLeft
 
+TrainTypeNames = {
+    "engine", "wagon", "wagonloaded", "barrier"
+}
+
+TrainType = {
+    engine = 1, wagon = 2, wagonloaded = 3, barrier = 4
+}
+
+G_TrainType = TrainType.engine
+
 function InitLevel(level)
     level.switches  = {}
     level.tiles     = {}
@@ -99,7 +109,9 @@ function love.update(dt)
     elseif EditMode[G_Editing] == EditMode.Trains then
         if (G_MousePos.x == G_CurrentTile.x) and (G_MousePos.y == G_CurrentTile.y) then
             G_Level.trains[G_CurrentTile.x][G_CurrentTile.y] =
-                Trains.createTrain(G_CurrentTile, G_Direction)
+                Trains.createTrain(
+                    G_CurrentTile, G_Direction, 1,
+                    TrainTypeNames[G_TrainType])
         end
     end
 
@@ -153,7 +165,9 @@ function love.draw()
     if EditMode[G_Editing] == EditMode.Tracks then
         love.graphics.print("Tile selected: " .. G_Level.selectedTile, 0, 26)
     elseif EditMode[G_Editing] == EditMode.Trains then
-        love.graphics.print("Direction: " .. Direction[G_Direction], 0, 26)
+        love.graphics.print(
+            "Direction: " .. Direction[G_Direction] .. 
+            ", TrainType: " .. TrainTypeNames[G_TrainType], 0, 26)
     end
 
 
@@ -239,7 +253,9 @@ function love.mousepressed(x, y, button)
 
         elseif EditMode[G_Editing] == EditMode.Trains then
             G_OutLevel.trains[G_MousePos.x][G_MousePos.y] =
-                Trains.createTrain(G_CurrentTile, G_Direction)
+                Trains.createTrain(
+                    G_CurrentTile, G_Direction, 1,
+                    TrainTypeNames[G_TrainType])
         end
 
     elseif button == 2 then
@@ -296,6 +312,22 @@ function Serialise(level)
     print(line .. "}")
 end
 
+function IncrementTrainT()
+    G_TrainType = G_TrainType + 1
+    
+    if G_TrainType > 4 then
+        G_TrainType =  1
+    end
+end
+
+function DecrementTrainT()
+    G_TrainType = G_TrainType - 1
+    
+    if G_TrainType < 1 then
+        G_TrainType =  4
+    end
+end
+
 function love.keypressed(key, unicode)
     if key == "up" then
         IncrementMode()
@@ -303,6 +335,14 @@ function love.keypressed(key, unicode)
         DecrementMode()
     elseif key == "p" then
         Serialise(G_OutLevel)
+    elseif key == "right" then
+        if EditMode[G_Editing] == EditMode.Trains then
+            IncrementTrainT()
+        end
+    elseif key == "left" then
+        if EditMode[G_Editing] == EditMode.Trains then
+            DecrementTrainT()
+        end
     end
 
     LoveFrames.keypressed(key, unicode)

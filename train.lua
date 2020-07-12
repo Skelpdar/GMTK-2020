@@ -73,7 +73,8 @@ local function createTrain(levelPos, direction, speed, trainType)
                 love.graphics.newImage("assets/LoadedUpRight.png"),
 		}
 	end	
-	if train.trainType == "barrier" then
+    if train.trainType == "barrier" then
+        train.speed = 10000000
 		train.sprites = { 
 					[TileMath.direction.UpLeft] = 
 						love.graphics.newImage("assets/Empty.png"),
