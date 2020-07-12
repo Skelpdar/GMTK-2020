@@ -10,6 +10,8 @@ Trains = require("train")
 Switch = require("switch")
 Boxes = require("boxes")
 Lever = require("lever")
+Smoke = require("smoke")
+TileMath = require("tileMath")
 
 G_Framerate = 0
 
@@ -45,6 +47,7 @@ local function loadLevel(name, reloading)
         level.tiles     = {}
         level.trains    = {}
 		level.levers    = {}
+		level.smokestacks = {}
 
 		if levelDescription.targets then
 			level.targets   = levelDescription.targets
@@ -84,11 +87,18 @@ local function loadLevel(name, reloading)
 						if level.switches[x][y].engaged then
 							toggled = 2
 						end	
-						table.insert(level.levers, Lever.createLever(level, 40, 0, rail.id, x, y, toggled))
+						table.insert(level.levers, Lever.createLever(level, 30, 5, rail.id, x, y, toggled))
 					end		
 				end		
             end
         end
+
+		for key, train in pairs(level.trains) do
+			if train.trainType == "engine" then
+				table.insert(level.smokestacks, Smoke.newSmokestack(train))
+				print("CREATED SMOKE")
+			end			
+		end
 
         level.width     = levelDescription.width
         level.height    = levelDescription.height
@@ -162,6 +172,14 @@ end
 function love.update(dt)
     G_Framerate = 1/dt	
 
+	for key, smokestack in pairs(G_Level.smokestacks) do
+		for key, smokesystem in pairs(smokestack.smokes) do
+			Smoke.updateSmokeSystem(smokesystem, dt)
+			smokesystem.pos_x, smokesystem.pos_y = TileMath.tilePosCenter(smokestack.train.levelPos.x, smokestack.train.levelPos.y).x, TileMath.tilePosCenter(smokestack.train.levelPos.x, smokestack.train.levelPos.y).y
+			print(smokesystem.pos_x)
+		end		
+	end		
+
 	G_tickTime = G_tickTime + dt
 	if G_tickTime > 1.5 then
 		print("Tick")	
@@ -225,6 +243,16 @@ function love.update(dt)
 				love.audio.play(sfx)
 			end		
 			if G_IsChangingLevel == true and G_VictoryTime > 2 then
+				for key, val in pairs(G_Level.levers) do
+					val.button:Remove()
+					val = nil
+				end
+				for key, val in pairs(G_Level.switches) do
+					val = nil
+				end	
+				for key, val in pairs(G_Level) do
+					val = nil
+				end	
 				G_Level = loadLevel(G_Level.nextlevel)
 				G_IsChangingLevel = false
 			end
@@ -239,6 +267,9 @@ function love.update(dt)
 end
 
 function love.draw()
+
+	
+
     love.graphics.setCanvas(G_screenCanvas)
     love.graphics.clear(0.651,0.529,0.408,1)
 
@@ -282,6 +313,9 @@ function love.draw()
          love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][2], G_font, 94+90, 139+302, 100)
      end
 
+	for key, val in pairs(G_Level.smokestacks) do
+		Smoke.renderSmokestack(val)
+	end		
 
     LoveFrames.draw()
 end
