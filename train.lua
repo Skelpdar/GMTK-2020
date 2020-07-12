@@ -33,45 +33,45 @@ local function createTrain(levelPos, direction, speed, trainType)
     }
 	if train.trainType == "wagon" then
 		train.sprites = { 
-					[TileMath.direction.UpLeft] = 
-						love.graphics.newImage("assets/TrainCar14.png"),
+            [TileMath.direction.UpLeft] = 
+                love.graphics.newImage("assets/TrainCarUpLeft.png"),
 
-					[TileMath.direction.Left] = 
-                love.graphics.newImage("assets/TrainCar25.png"),
+            [TileMath.direction.Left] = 
+                love.graphics.newImage("assets/TrainCarLeft.png"),
 
-					[TileMath.direction.DownLeft] = 
-						love.graphics.newImage("assets/TrainCar26.png"),
+            [TileMath.direction.DownLeft] = 
+                love.graphics.newImage("assets/TrainCarDownLeft.png"),
 
-					[TileMath.direction.DownRight] = 
-						love.graphics.newImage("assets/TrainCar14.png"),
+            [TileMath.direction.DownRight] = 
+                love.graphics.newImage("assets/TrainCarDownRight.png"),
 
-					[TileMath.direction.Right] = 
-						love.graphics.newImage("assets/TrainCar25.png"),
+            [TileMath.direction.Right] = 
+                love.graphics.newImage("assets/TrainCarRight.png"),
 
-					[TileMath.direction.UpRight] = 
-						love.graphics.newImage("assets/TrainCar26.png"),
-				}
+            [TileMath.direction.UpRight] = 
+                love.graphics.newImage("assets/TrainCarUpRight.png"),
+		}
 	end		
     if train.trainType == "wagonloaded" then
 		train.sprites = { 
-					[TileMath.direction.UpLeft] = 
-						love.graphics.newImage("assets/TrainCarLoaded14.png"),
+            [TileMath.direction.UpLeft] = 
+                love.graphics.newImage("assets/LoadedUpLeft.png"),
 
-					[TileMath.direction.Left] = 
-                love.graphics.newImage("assets/TrainCarLoaded25.png"),
+            [TileMath.direction.Left] = 
+                love.graphics.newImage("assets/LoadedLeft.png"),
 
-					[TileMath.direction.DownLeft] = 
-						love.graphics.newImage("assets/TrainCarLoaded26.png"),
+            [TileMath.direction.DownLeft] = 
+                love.graphics.newImage("assets/LoadedDownLeft.png"),
 
-					[TileMath.direction.DownRight] = 
-						love.graphics.newImage("assets/TrainCarLoaded14.png"),
+            [TileMath.direction.DownRight] = 
+                love.graphics.newImage("assets/LoadedDownRight.png"),
 
-					[TileMath.direction.Right] = 
-						love.graphics.newImage("assets/TrainCarLoaded25.png"),
+            [TileMath.direction.Right] = 
+                love.graphics.newImage("assets/LoadedRight.png"),
 
-					[TileMath.direction.UpRight] = 
-						love.graphics.newImage("assets/TrainCarLoaded26.png"),
-				}
+            [TileMath.direction.UpRight] = 
+                love.graphics.newImage("assets/LoadedUpRight.png"),
+		}
 	end	
     return train
 end
