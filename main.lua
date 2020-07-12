@@ -19,6 +19,8 @@ G_ScreenHeight = 480
 G_IsChangingLevel = false
 G_VictoryTime = 0
 
+G_tickTime = 0
+
 isInDialogue = true
 local function loadLevel(name, reloading)
         if not reloading then
@@ -159,6 +161,38 @@ end
 -- love.timer.getFPS is also available
 function love.update(dt)
     G_Framerate = 1/dt	
+
+	G_tickTime = G_tickTime + dt
+	if G_tickTime > 1.5 then
+		print("Tick")	
+		G_tickTime = 0	
+		if isInDialogue == false then	
+				for key, train in pairs(G_Level.trains) do
+					Trains.move(train, G_Level)
+				end
+
+			-- Check for collisions
+			local prevTrains = {} 
+			for key, train in pairs(G_Level.trains) do
+				for k, prevPos in pairs(prevTrains) do
+					if prevPos.levelPos.x == train.levelPos.x and prevPos.levelPos.y == train.levelPos.y then
+						Trains.disableTrain(G_Level.trains,train, G_Level)
+						Trains.disableTrain(G_Level.trains,prevPos,G_Level)
+					end	
+				end
+				prevTrains[key] = train
+			end		
+			end
+
+			-- Catapult boxes
+			for key, train in pairs(G_Level.trains) do
+				if train.trainType == "wagonloaded" and train.active == false then
+					Boxes.createBox(G_Level, train.levelPos.x, train.levelPos.y, train.direction)
+					train.trainType = "wagon"
+					Trains.makeWagon(train)	
+				end		
+	end
+	end		
 
 	if isInDialogue then
         G_Level.dialogueTimer = G_Level.dialogueTimer + dt
