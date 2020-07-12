@@ -67,7 +67,7 @@ function love.load()
 
 	--Temp stuff
 	box = Boxes.createBox(5,5,5)
-	Lever.createLever(G_Level, 0, 0, 135, 1, 1, 0)
+	Lever.createLever(G_Level, 0, 0, 134, 11, 2, 1)
 end
 
 -- love.update is given the timestep since the last update in seconds
