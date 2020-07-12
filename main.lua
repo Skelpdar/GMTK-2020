@@ -20,7 +20,12 @@ G_IsChangingLevel = false
 G_VictoryTime = 0
 
 isInDialogue = true
-local function loadLevel(name)
+local function loadLevel(name, reloading)
+		if not reloading then
+			reloading = false
+		end
+
+		local levelDescription = nil
     	local levelDescription = require(name)
         local level = {}
 
@@ -100,101 +105,45 @@ local function loadLevel(name)
 
         return level
     end
+
+
 function love.load(name)
+	if not reloading then
+		reloading = false
+	end		
+		
     G_screenCanvas = love.graphics.newCanvas(640,480)
 
 	G_font = love.graphics.newFont("fonts/Cabin-Regular.ttf", 16)
 
-    --[[local function loadLevel(name)
-    	local levelDescription = require(name)
-        local level = {}
-
-		level.name = name
-		level.nextlevel = "levels/mainmenu"
-
-		--Reset boxes
-		Boxes.boxes = {}
-
-        level.switches  = {}
-        level.tiles     = {}
-        level.trains    = {}
-		level.levers    = {}
-
-		if levelDescription.targets then
-			level.targets   = levelDescription.targets
-		else
-			level.targets = {{}}
-		end	
-
-        for x = 1, levelDescription.width, 1 do
-            level.switches[x]   = {}
-            level.tiles[x]      = {}
-            for y = 1, levelDescription.height, 1 do
-                local rail = levelDescription.rails[y][x]
-
-                if type(rail.id) ~= "table" then
-                    level.switches[x][y]    = Tiles.switchMapping[rail.id]
-                    level.tiles[x][y]       = rail.id
-                else
-				--]]
-                --    level.switches[x][y]    = Tiles.switchMapping[rail.id[1]][rail.id[2]]
-                --[[    level.tiles[x][y]       = rail.id[1]
-                end
-                if type(rail.train) ~= "nil" then
-                    table.insert(
-                        level.trains,
-                        Trains.createTrain(
-                            {x = x, y = y}, rail.train.dir, rail.train.speed, rail.train.trainType
-                        )
-                    )
-                end
-                if type(rail.toggled) ~= "nil" then
-                    if rail.toggled == true then
-                        level.switches[x][y]:toggle()
-                    end
-                end
-				if type(rail.hasLever) ~= "nil" then
-					if rail.hasLever == true then
-						local toggled = 1	
-						if type(rail.toggled) ~= "nil" then
-							if rail.toggled == true then
-								toggled = 2
-							end	
-						end	
-						table.insert(level.levers, Lever.createLever(level, 40, 0, rail.id, x, y, toggled))
-					end		
-				end		
-            end
-        end
-
-        level.width     = levelDescription.width
-        level.height    = levelDescription.height
-
-		level.dialogueProgress = levelDescription.dialogueProgress
-		level.dialogueTimer = levelDescription.dialogueTimer
-		level.dialogue = levelDescription.dialogue
-
-		if #level.dialogue == 0 then
-			isInDialogue = false
-		else
-			isInDialogue = true
-		end	
-
-        return level
-    end	--]]	
-
-	G_Level = loadLevel("levels/level1")
-
-	--for key, val in pairs(G_Level.levers) do
-	--		val.button:Remove()
-	--end		
-
-    --G_Level = loadLevel("levels/mainmenu")
+    G_Level = loadLevel("levels/level1")
 
     Tiles.loadRailSprites()
 
-    love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=true})
+    love.window.setMode(G_ScreenWidth, G_ScreenHeight, {vsync=-1, resizable=false})
     love.graphics.setBackgroundColor(19/255, 20/255, 68/255)
+
+	-- Reset button
+	resetButton = LoveFrames.Create("imagebutton")
+	resetButton:SetImage(love.graphics.newImage("assets/UI/ui_resetbutton.png"))
+	resetButton:SetPos(640-220,0)
+	resetButton:SetText("")
+	resetButton:SetWidth(220)
+	resetButton:SetHeight(64)
+	resetButton.OnClick = function(object, x, y)
+		for key, val in pairs(G_Level.levers) do
+			val.button:Remove()
+			val = nil
+		end
+		for key, val in pairs(G_Level.switches) do
+			val = nil
+		end	
+		for key, val in pairs(G_Level) do
+			val = nil
+		end	
+		G_Level = loadLevel(G_Level.name, true)
+	end	
+			
 
 end
 
@@ -238,13 +187,13 @@ function love.update(dt)
 
 	if isInDialogue == false then
 		Boxes.updateBoxes(dt)
-    	LoveFrames.update(dt)
 	end
+    LoveFrames.update(dt)
 end
 
 function love.draw()
     love.graphics.setCanvas(G_screenCanvas)
-    love.graphics.clear(0,0,0,1)
+    love.graphics.clear(0.651,0.529,0.408,1)
 
     --SetCameraPosition(love, -Camera_x, -Camera_y)
 
@@ -277,7 +226,7 @@ function love.draw()
     -- math.floor(x + delta_x / 2)
     love.graphics.print({{1,0,0,1},math.floor(G_Framerate+0.5)}, 0, 0)
 
-	if isInDialogue and #G_Level.dialogue > 0 then    
+	if isInDialogue and #G_Level.dialogue > 0 then 
          love.graphics.draw(G_Level.dialogue[G_Level.dialogueProgress][1], 50+90, 50+302)
          love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][3], G_font, 140+90, 75+302, 245)
          love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][2], G_font, 94+90, 139+302, 100)
