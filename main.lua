@@ -54,6 +54,17 @@ function love.load()
                         level.switches[x][y]:toggle()
                     end
                 end
+				if type(rail.hasLever) ~= "nil" then
+					if rail.hasLever == true then
+						local toggled = 1	
+						if type(rail.toggled) ~= "nil" then
+							if rail.toggled == true then
+								toggled = 2
+							end	
+						end	
+						Lever.createLever(level, 40, 0, rail.id, x, y, toggled)
+					end		
+				end		
             end
         end
 
@@ -71,8 +82,8 @@ function love.load()
     love.graphics.setBackgroundColor(19/255, 20/255, 68/255)
 
 	--Temp stuff
-	box = Boxes.createBox(5,5,5)
-	Lever.createLever(G_Level, 0, 0, 134, 11, 2, 1)
+	box = Boxes.createBox(G_Level, 5,5,5)
+	--Lever.createLever(G_Level, 20, 0, 134, 2, 11, 1)
 end
 
 -- love.update is given the timestep since the last update in seconds
@@ -145,8 +156,8 @@ function love.keypressed(key, unicode)
 	for key, train in pairs(G_Level.trains) do
 		for k, prevPos in pairs(prevTrains) do
 			if prevPos.levelPos.x == train.levelPos.x and prevPos.levelPos.y == train.levelPos.y then
-				Trains.disableTrain(G_Level.trains,train)
-				Trains.disableTrain(G_Level.trains,prevPos)
+				Trains.disableTrain(G_Level.trains,train, Boxes, G_Level)
+				Trains.disableTrain(G_Level.trains,prevPos, Boxes, G_Level)
 			end	
 		end
 		prevTrains[key] = train

@@ -1,4 +1,5 @@
 LoveFrames = require("lib/loveframes")
+TileMath = require("tileMath")
 
 local M = {}
 
@@ -32,21 +33,32 @@ local function createLever(level,x,y,railType,railx, raily, state)
 	-- Whether or not it is toggled once on level start, 1 or 2
 	lever.state = state or 1
 
-	local button = LoveFrames.Create("imagebutton")
-	button:SetImage(M.sprites[directionMapping[railType][state]])
+	lever.button = LoveFrames.Create("imagebutton")
+	lever.button:SetImage(M.sprites[directionMapping[railType][state]])
     print(directionMapping[railType][1])
-	button:SetText("")
-	button:Center()
-    button.OnClick = function(object, x, y)
-		print(lever.railx)	
-        level.switches[lever.railx][lever.raily]:toggle()
-		if lever.state == 1 then
-			lever.state = 2
-			button:SetImage(M.sprites[directionMapping[lever.railType][lever.state]])
-		else
-			lever.state = 1
-			button:SetImage(M.sprites[directionMapping[lever.railType][lever.state]])
-		end	
+	lever.button:SetText("")
+	--button:Center()
+	local worldpos = TileMath.tilePosCenter(railx,raily)
+	lever.button:SetPos(worldpos.x+x, worldpos.y+y, true)
+
+    lever.button.OnClick = function(object, x, y)
+		occupied = false	
+		for key, train in pairs(level.trains) do
+			if train.levelPos.x ==  railx and train.levelPos.y == raily then
+				print("Occupied")
+				occupied = true
+			end		
+		end
+		if occupied == false then	
+	        level.switches[lever.railx][lever.raily]:toggle()
+			if lever.state == 1 then
+				lever.state = 2
+				lever.button:SetImage(M.sprites[directionMapping[lever.railType][lever.state]])
+			else
+				lever.state = 1
+				lever.button:SetImage(M.sprites[directionMapping[lever.railType][lever.state]])
+			end	
+		end
     end
 
 end	

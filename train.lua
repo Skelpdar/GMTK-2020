@@ -52,7 +52,27 @@ local function createTrain(levelPos, direction, speed, trainType)
 						love.graphics.newImage("assets/TrainCar26.png"),
 				}
 	end		
-    
+    if train.trainType == "wagonloaded" then
+		train.sprites = { 
+					[TileMath.direction.UpLeft] = 
+						love.graphics.newImage("assets/TrainCarLoaded14.png"),
+
+					[TileMath.direction.Left] = 
+                love.graphics.newImage("assets/TrainCarLoaded25.png"),
+
+					[TileMath.direction.DownLeft] = 
+						love.graphics.newImage("assets/TrainCarLoaded26.png"),
+
+					[TileMath.direction.DownRight] = 
+						love.graphics.newImage("assets/TrainCarLoaded14.png"),
+
+					[TileMath.direction.Right] = 
+						love.graphics.newImage("assets/TrainCarLoaded25.png"),
+
+					[TileMath.direction.UpRight] = 
+						love.graphics.newImage("assets/TrainCarLoaded26.png"),
+				}
+	end	
     return train
 end
 
@@ -101,12 +121,18 @@ end
 
 Export.drawTrain = drawTrain
 
-local function disableTrain(allTrains, train)
+local function disableTrain(allTrains, train, boxes, level)
+		
 	train.active = false	
+
+	-- Catapult boxes :D
+	if train.trainType == "wagonloaded" then
+		boxes.createBox(level, train.levelPos.x, train.levelPos.y, train.direction)
+	end		
 
 	for key, otherTrain in pairs(allTrains) do
 		local otherDelta = TileMath.lvlPosDelta(otherTrain.direction, otherTrain.levelPos)
-		if otherTrain.trainType == "wagon" and otherTrain.levelPos.x + otherDelta.x == train.levelPos.x and otherTrain.levelPos.y + otherDelta.y == train.levelPos.y then
+		if (otherTrain.trainType == "wagon" or otherTrain.trainType == "wagonloaded") and otherTrain.levelPos.x + otherDelta.x == train.levelPos.x and otherTrain.levelPos.y + otherDelta.y == train.levelPos.y then
 			disableTrain(allTrains, otherTrain)
 		end		
 	end		

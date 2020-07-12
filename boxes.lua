@@ -5,9 +5,9 @@ local M = {}
 M.boxes = {}
 
 --Airtime for boxes
-M.airtime = 5
+M.airtime = 1
 
-local function createBox(tilex,tiley, dir)
+local function createBox(level, tilex,tiley, dir)
 	local box = {}
 
 	box.startx = tilex
