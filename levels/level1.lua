@@ -20,4 +20,12 @@ world.rails = {{{id = 1346},    {id = 35},     {id = 25},     {id = 0},      {id
 world.width = 16
 world.height = 13
 
+world.dialogueProgress = 1 
+world.dialogueTimer = 0 
+world.dialogue = {{love.graphics.newImage("assets/UI/ui_textbox_01.png"), "Boss", "As my late father used to say, when he (like me) was the CEO of Crash Corp: \"There are no breaks on the train of progress!\""},
+                {love.graphics.newImage("assets/UI/ui_textbox_02.png"), "You", "Isn't this a workplace safety violation? The advertisement was about long shifts."},
+                {love.graphics.newImage("assets/UI/ui_textbox_01.png"), "Boss", "Don't you dare speak ill of my father's ideals. He was a very literal man. There will be no breaks."},
+                {love.graphics.newImage("assets/UI/ui_textbox_02.png"), "You", "Who directs the tracks?"},
+                {love.graphics.newImage("assets/UI/ui_textbox_01.png"), "Boss", "Phaw, I don't believe in middle managment. As my late father used to say: \"The cheapest traffic planning is divine intervention\""}}
+
 return world

@@ -16,8 +16,12 @@ G_Framerate = 0
 G_ScreenWidth = 640
 G_ScreenHeight = 480
 
+isInDialogue = true
+
 function love.load()
     G_screenCanvas = love.graphics.newCanvas(640,480)
+
+	G_font = love.graphics.newFont("fonts/Cabin-Regular.ttf", 16)
 
     local levelDescription = require("levels/level1")
 
@@ -71,6 +75,10 @@ function love.load()
         level.width     = levelDescription.width
         level.height    = levelDescription.height
 
+		level.dialogueProgress = levelDescription.dialogueProgress
+		level.dialogueTimer = levelDescription.dialogueTimer
+		level.dialogue = levelDescription.dialogue
+
         return level
     end		
 
@@ -91,8 +99,21 @@ end
 function love.update(dt)
     G_Framerate = 1/dt	
 
-	Boxes.updateBoxes(dt)
-    LoveFrames.update(dt)
+	if isInDialogue then
+        G_Level.dialogueTimer = G_Level.dialogueTimer + dt
+        if love.mouse.isDown(1)  and G_Level.dialogueTimer > 0.3 then
+            G_Level.dialogueProgress = G_Level.dialogueProgress + 1
+            G_Level.dialogueTimer = 0
+            if G_Level.dialogueProgress > #G_Level.dialogue then
+                isInDialogue = false
+            end
+        end
+    end
+
+	if isInDialogue == false then
+		Boxes.updateBoxes(dt)
+    	LoveFrames.update(dt)
+	end
 end
 
 function love.draw()
@@ -130,6 +151,13 @@ function love.draw()
     -- math.floor(x + delta_x / 2)
     love.graphics.print({{1,0,0,1},math.floor(G_Framerate+0.5)}, 0, 0)
 
+	if isInDialogue then    
+         love.graphics.draw(G_Level.dialogue[G_Level.dialogueProgress][1], 50+90, 50+302)
+         love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][3], G_font, 140+90, 75+302, 245)
+         love.graphics.printf(G_Level.dialogue[G_Level.dialogueProgress][2], G_font, 94+90, 139+302, 100)
+     end
+
+
     LoveFrames.draw()
 end
 
@@ -146,6 +174,7 @@ function love.mousereleased(x, y, button)
 end
 
 function love.keypressed(key, unicode)
+	if isInDialogue == false then	
     if key == "n" then
         for key, train in pairs(G_Level.trains) do
             Trains.move(train, G_Level)
@@ -171,7 +200,8 @@ function love.keypressed(key, unicode)
 			train.trainType = "wagon"
 			Trains.makeWagon(train)	
 		end		
-	end		
+	end
+	end
 
     LoveFrames.keypressed(key, unicode)
 end
