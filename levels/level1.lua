@@ -31,4 +31,6 @@ world.dialogue = {{love.graphics.newImage("assets/UI/ui_textbox_01.png"), "Boss"
 --Where cargo should land, delivered becomes true when a box lands on it				
 world.targets = {{x = 3, y = 9, delivered=false}}
 
+world.nextlevel = "levels/mainmenu"
+
 return world

@@ -16,16 +16,20 @@ G_Framerate = 0
 G_ScreenWidth = 640
 G_ScreenHeight = 480
 
+G_IsChangingLevel = false
+G_VictoryTime = 0
+
 isInDialogue = true
-
-function love.load(name)
-    G_screenCanvas = love.graphics.newCanvas(640,480)
-
-	G_font = love.graphics.newFont("fonts/Cabin-Regular.ttf", 16)
-
-    local function loadLevel(name)
+local function loadLevel(name)
     	local levelDescription = require(name)
         local level = {}
+
+		level.name = name
+		if levelDescription.nextlevel then
+			level.nextlevel = levelDescription.nextlevel
+		else	
+			level.nextlevel = "levels/mainmenu"
+		end
 
 		--Reset boxes
 		Boxes.boxes = {}
@@ -95,7 +99,89 @@ function love.load(name)
 		end	
 
         return level
-    end		
+    end
+function love.load(name)
+    G_screenCanvas = love.graphics.newCanvas(640,480)
+
+	G_font = love.graphics.newFont("fonts/Cabin-Regular.ttf", 16)
+
+    --[[local function loadLevel(name)
+    	local levelDescription = require(name)
+        local level = {}
+
+		level.name = name
+		level.nextlevel = "levels/mainmenu"
+
+		--Reset boxes
+		Boxes.boxes = {}
+
+        level.switches  = {}
+        level.tiles     = {}
+        level.trains    = {}
+		level.levers    = {}
+
+		if levelDescription.targets then
+			level.targets   = levelDescription.targets
+		else
+			level.targets = {{}}
+		end	
+
+        for x = 1, levelDescription.width, 1 do
+            level.switches[x]   = {}
+            level.tiles[x]      = {}
+            for y = 1, levelDescription.height, 1 do
+                local rail = levelDescription.rails[y][x]
+
+                if type(rail.id) ~= "table" then
+                    level.switches[x][y]    = Tiles.switchMapping[rail.id]
+                    level.tiles[x][y]       = rail.id
+                else
+				--]]
+                --    level.switches[x][y]    = Tiles.switchMapping[rail.id[1]][rail.id[2]]
+                --[[    level.tiles[x][y]       = rail.id[1]
+                end
+                if type(rail.train) ~= "nil" then
+                    table.insert(
+                        level.trains,
+                        Trains.createTrain(
+                            {x = x, y = y}, rail.train.dir, rail.train.speed, rail.train.trainType
+                        )
+                    )
+                end
+                if type(rail.toggled) ~= "nil" then
+                    if rail.toggled == true then
+                        level.switches[x][y]:toggle()
+                    end
+                end
+				if type(rail.hasLever) ~= "nil" then
+					if rail.hasLever == true then
+						local toggled = 1	
+						if type(rail.toggled) ~= "nil" then
+							if rail.toggled == true then
+								toggled = 2
+							end	
+						end	
+						table.insert(level.levers, Lever.createLever(level, 40, 0, rail.id, x, y, toggled))
+					end		
+				end		
+            end
+        end
+
+        level.width     = levelDescription.width
+        level.height    = levelDescription.height
+
+		level.dialogueProgress = levelDescription.dialogueProgress
+		level.dialogueTimer = levelDescription.dialogueTimer
+		level.dialogue = levelDescription.dialogue
+
+		if #level.dialogue == 0 then
+			isInDialogue = false
+		else
+			isInDialogue = true
+		end	
+
+        return level
+    end	--]]	
 
 	G_Level = loadLevel("levels/level1")
 
@@ -128,7 +214,27 @@ function love.update(dt)
         end
     end
 
-	
+	numOfTargets = #G_Level.targets
+	if numOfTargets > 0 then
+		hitTargets = 0	
+		for key,val in pairs(G_Level.targets) do
+			if val.delivered == true then
+				hitTargets = hitTargets + 1
+			end	
+		end
+		 
+		if hitTargets == numOfTargets then
+			if G_IsChangingLevel == false then
+				G_IsChangingLevel = true
+				G_VictoryTime = 0
+			end		
+			if G_IsChangingLevel == true and G_VictoryTime > 2 then
+				G_Level = loadLevel(G_Level.nextlevel)
+				G_IsChangingLevel = false
+			end
+			G_VictoryTime = G_VictoryTime + dt
+		end	
+	end	
 
 	if isInDialogue == false then
 		Boxes.updateBoxes(dt)
