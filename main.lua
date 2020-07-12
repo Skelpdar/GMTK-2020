@@ -49,6 +49,11 @@ function love.load()
                         )
                     )
                 end
+                if type(rail.toggled) ~= "nil" then
+                    if rail.toggled == true then
+                        level.switches[x][y]:toggle()
+                    end
+                end
             end
         end
 
