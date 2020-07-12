@@ -5,7 +5,11 @@ local function createSwitch(entry, exits)
     }
 
     if (table.getn(exits) == 2) then
-        function switch:toggle()
+        function switch:toggle(engage)
+            if engage then
+                self.engaged = true
+            end
+
             self.engaged = self.engaged ~= true
 
             if(self.engaged) then

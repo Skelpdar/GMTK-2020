@@ -14,7 +14,7 @@ world.rails = {{{id = 1346},    {id = 35},     {id = 25},     {id = 0},      {id
                {{id = 0},		{id = 13},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 35},		{id = 24},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0}},
                {{id = 46},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 46},		{id = 0},		{id = 13, train = {trainType="barrier", speed=10000000}},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0}},
                {{id = 0},		{id = 134, hasLever = true, toggled=true},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 13},		{id = 136},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0}},
-               {{id = 46},		{id = 15},		{id = 25},		{id = 25},		{id = 0},		{id = 0},		{id = 136, toggled = false},		{id = 136},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0}},
+               {{id = 46},		{id = 15},		{id = 25},		{id = 25},		{id = 0},		{id = 0},		{id = 136, toggled = true},		{id = 136},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0},		{id = 0}},
                {{id = 25},		{id = 15},		{id = 25},		{id = 25, train = {dir = direction.Right, speed = 1}},		{id = 25, train= {dir=direction.Right, speed=1, trainType="wagonloaded"}},		{id = 25},		{id = 26},		{id = 25},		{id = 25},		{id = 25},		{id = 25},		{id = 25},		{id = 25},		{id = 25},		{id = 26},		{id = 25}}}
 
 world.width = 16

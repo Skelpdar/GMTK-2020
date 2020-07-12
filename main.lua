@@ -21,11 +21,10 @@ G_VictoryTime = 0
 
 isInDialogue = true
 local function loadLevel(name, reloading)
-		if not reloading then
+        if not reloading then
 			reloading = false
-		end
+        end
 
-		local levelDescription = nil
     	local levelDescription = require(name)
         local level = {}
 
@@ -73,16 +72,14 @@ local function loadLevel(name, reloading)
                 end
                 if type(rail.toggled) ~= "nil" then
                     if rail.toggled == true then
-                        level.switches[x][y]:toggle()
+                        level.switches[x][y]:toggle(true)
                     end
                 end
 				if type(rail.hasLever) ~= "nil" then
 					if rail.hasLever == true then
 						local toggled = 1	
-						if type(rail.toggled) ~= "nil" then
-							if rail.toggled == true then
-								toggled = 2
-							end	
+						if level.switches[x][y].engaged then
+							toggled = 2
 						end	
 						table.insert(level.levers, Lever.createLever(level, 40, 0, rail.id, x, y, toggled))
 					end		
@@ -140,7 +137,7 @@ function love.load(name)
 		end	
 		for key, val in pairs(G_Level) do
 			val = nil
-		end	
+        end	
 		G_Level = loadLevel(G_Level.name, true)
 	end	
 			
