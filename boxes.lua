@@ -10,6 +10,9 @@ M.airtime = 1
 local function createBox(level, tilex,tiley, dir)
 	local box = {}
 
+	local sfx = love.audio.newSource("audio/sfx_gameplay_box_landing_1_long.wav", "stream")
+    sfx:play()
+
 	box.startx = tilex
 	box.starty = tiley
 
@@ -29,6 +32,8 @@ local function createBox(level, tilex,tiley, dir)
 		print(val.y)
 		if val.x == box.goalTiles.x and val.y == box.goalTiles.y then
 			val.delivered = true
+			--sfx = love.audio.newSource("audio/sfx_gameplay_box_landing_1_long.wav", "stream")
+			--sfx:play()
 			print("HIT TARGET")
 		end		
 	end

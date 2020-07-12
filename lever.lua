@@ -52,6 +52,8 @@ local function createLever(level,x,y,railType,railx, raily, state)
 		end
 		if occupied == false then	
 	        level.switches[lever.railx][lever.raily]:toggle()
+			sfx = love.audio.newSource("audio/sfx_gameplay_lever_1.wav", "stream")
+			sfx:play()
 			if lever.state == 1 then
 				lever.state = 2
 				lever.button:SetImage(M.sprites[directionMapping[lever.railType][lever.state]])
