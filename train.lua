@@ -1,4 +1,5 @@
 TileMath = require("tileMath")
+Boxes = require("boxes")
 
 local Export = {}
 
@@ -78,6 +79,30 @@ end
 
 Export.createTrain = createTrain
 
+local function makeWagon(train)
+train.sprites = {
+                    [TileMath.direction.UpLeft] =
+                        love.graphics.newImage("assets/TrainCar14.png"),
+
+                    [TileMath.direction.Left] =
+                love.graphics.newImage("assets/TrainCar25.png"),
+
+                    [TileMath.direction.DownLeft] =
+                        love.graphics.newImage("assets/TrainCar26.png"),
+
+                    [TileMath.direction.DownRight] =
+                        love.graphics.newImage("assets/TrainCar14.png"),
+
+                    [TileMath.direction.Right] =
+                        love.graphics.newImage("assets/TrainCar25.png"),
+
+                    [TileMath.direction.UpRight] =
+                        love.graphics.newImage("assets/TrainCar26.png"),
+                }	
+end		
+
+Export.makeWagon = makeWagon
+
 local function move(train, level)
 	if train.active then	
     train.ticks = train.ticks + 1
@@ -121,14 +146,15 @@ end
 
 Export.drawTrain = drawTrain
 
-local function disableTrain(allTrains, train, boxes, level)
+local function disableTrain(allTrains, train, level)
 		
 	train.active = false	
 
 	-- Catapult boxes :D
-	if train.trainType == "wagonloaded" then
-		boxes.createBox(level, train.levelPos.x, train.levelPos.y, train.direction)
-	end		
+	--if train.trainType == "wagonloaded" then
+	--	print(train.levelPos.x)
+	--	Boxes.createBox(level, train.levelPos.x, train.levelPos.y, train.direction)
+	--end		
 
 	for key, otherTrain in pairs(allTrains) do
 		local otherDelta = TileMath.lvlPosDelta(otherTrain.direction, otherTrain.levelPos)

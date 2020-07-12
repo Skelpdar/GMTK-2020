@@ -82,7 +82,7 @@ function love.load()
     love.graphics.setBackgroundColor(19/255, 20/255, 68/255)
 
 	--Temp stuff
-	box = Boxes.createBox(G_Level, 5,5,5)
+	--box = Boxes.createBox(G_Level, 5,5,5)
 	--Lever.createLever(G_Level, 20, 0, 134, 2, 11, 1)
 end
 
@@ -156,13 +156,22 @@ function love.keypressed(key, unicode)
 	for key, train in pairs(G_Level.trains) do
 		for k, prevPos in pairs(prevTrains) do
 			if prevPos.levelPos.x == train.levelPos.x and prevPos.levelPos.y == train.levelPos.y then
-				Trains.disableTrain(G_Level.trains,train, Boxes, G_Level)
-				Trains.disableTrain(G_Level.trains,prevPos, Boxes, G_Level)
+				Trains.disableTrain(G_Level.trains,train, G_Level)
+				Trains.disableTrain(G_Level.trains,prevPos,G_Level)
 			end	
 		end
 		prevTrains[key] = train
 	end		
 	end
+
+	-- Catapult boxes
+	for key, train in pairs(G_Level.trains) do
+		if train.trainType == "wagonloaded" and train.active == false then
+			Boxes.createBox(G_Level, train.levelPos.x, train.levelPos.y, train.direction)
+			train.trainType = "wagon"
+			Trains.makeWagon(train)	
+		end		
+	end		
 
     LoveFrames.keypressed(key, unicode)
 end
