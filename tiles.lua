@@ -86,8 +86,11 @@ end
 
 ToggledSprite = love.graphics.newImage("assets/Toggled.png")
 
+LeverOnSprite = love.graphics.newImage("assets/Lever1.png")
+LeverOffSprite = love.graphics.newImage("assets/Lever4.png")
+
 -- Takes a tracks tileset as in the above example and renders it
-function M.drawRails(tiles, switches)
+function M.drawRails(tiles, switches, levers)
     for x, column in pairs(tiles) do
         for y, tile in pairs(column) do
             if tile ~= 0 then
@@ -95,7 +98,15 @@ function M.drawRails(tiles, switches)
                 love.graphics.draw(M.rail_sprites[tile], pos.x, pos.y)
 
                 if switches[x][y] == 1 then
-                    love.graphics.draw(ToggledSprite, pos.x, pos.y)
+                    love.graphics.draw(ToggledSprite, pos.x, pos.y + 10)
+                end
+                
+                if levers[x][y] == 1 then
+                    if switches[x][y] == 1 then
+                        love.graphics.draw(LeverOnSprite, pos.x, pos.y)
+                    else
+                        love.graphics.draw(LeverOffSprite, pos.x, pos.y)
+                    end
                 end
             end		
         end		

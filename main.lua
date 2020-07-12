@@ -124,8 +124,8 @@ function love.draw()
 
     --SetCameraPosition(love, -Camera_x, -Camera_y)
 
-    Tiles.drawRails(G_OutLevel.tiles, G_OutLevel.switches)
-    Tiles.drawRails(G_Level.tiles, G_Level.switches)
+    Tiles.drawRails(G_OutLevel.tiles, G_OutLevel.switches, G_OutLevel.levers)
+    Tiles.drawRails(G_Level.tiles, G_Level.switches, G_OutLevel.levers)
 
     for i, column in pairs(G_Level.trains) do
         for j, train in pairs(column) do
@@ -250,6 +250,8 @@ function love.mousepressed(x, y, button)
             
             G_OutLevel.switches[G_MousePos.x][G_MousePos.y] = 0
 
+            G_OutLevel.levers[G_MousePos.x][G_MousePos.y] = 0
+
         elseif EditMode[G_Editing] == EditMode.Trains then
             G_OutLevel.trains[G_MousePos.x][G_MousePos.y] =
                 Trains.createTrain(
@@ -264,6 +266,15 @@ function love.mousepressed(x, y, button)
                     G_OutLevel.switches[G_MousePos.x][G_MousePos.y] = 0
                 end
             end
+
+        elseif EditMode[G_Editing] == EditMode.Levers then
+            if G_OutLevel.tiles[G_MousePos.x][G_MousePos.y] ~= 0 then
+                if G_OutLevel.levers[G_MousePos.x][G_MousePos.y] == 0 then
+                    G_OutLevel.levers[G_MousePos.x][G_MousePos.y] = 1
+                else
+                    G_OutLevel.levers[G_MousePos.x][G_MousePos.y] = 0
+                end
+            end
         end
 
     elseif button == 2 then
@@ -272,6 +283,8 @@ function love.mousepressed(x, y, button)
             G_OutLevel.tiles[G_MousePos.x][G_MousePos.y] = 0
             
             G_OutLevel.switches[G_MousePos.x][G_MousePos.y] = 0
+
+            G_OutLevel.levers[G_MousePos.x][G_MousePos.y] = 0
 
         elseif EditMode[G_Editing] == EditMode.Trains then
             G_OutLevel.trains[G_MousePos.x][G_MousePos.y] = 0
@@ -314,6 +327,10 @@ function Serialise(level)
 
             if  level.switches[x][y] == 1 then
                 line = line .. ", toggled = true"
+            end
+
+            if level.levers[x][y] == 1 then
+                line = line .. ", hasLever = true"
             end
 
             line = line .. "}, "
