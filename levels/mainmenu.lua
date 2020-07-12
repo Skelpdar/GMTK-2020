@@ -26,7 +26,7 @@ world.dialogueProgress = 1
 world.dialogueTimer = 0 
 world.dialogue = {{love.graphics.newImage("assets/Empty.png"), " ", " "}}
 
-world.nextlevel = "levels/levelOne"
+world.nextlevel = "levels/twoengines"
 
 world.props = {}
 

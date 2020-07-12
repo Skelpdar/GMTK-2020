@@ -7,7 +7,7 @@ world.rails = {{{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id 
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 35, train = {dir = 5, speed = 1, trainType = "engine"}}, {id = 25}, {id = 245, hasLever = true}, {id = 25}, {id = 24}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
-{{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 36}, {id = 0}, {id = 0}, {id = 14}, {id = 0}, {id = 14}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
+{{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 36, train = {dir = 6, speed = 1, trainType = "wagon"}}, {id = 0}, {id = 0}, {id = 14}, {id = 0}, {id = 14}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 36, train = {dir = 3, speed = 1, trainType = "wagonloaded"}}, {id = 0}, {id = 35}, {id = 25}, {id = 125}, {id = 24}, {id = 14}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 36, train = {dir = 3, speed = 1, trainType = "engine"}}, {id = 0}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 13}, {id = 13}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 36}, {id = 0}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 36}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },

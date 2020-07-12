@@ -1,14 +1,6 @@
-local M = {}
+TileMath = require("tileMath")
 
-function M.newSmokestack(x,y)
-	smokestack.smoke01 = newSmokeSystem(x, y, "assets/Particles/p_particle_01.png")
-    smokestack.smoke02 = newSmokeSystem(x, y, "assets/Particles/p_particle_02.png")
-    smokestack.smoke03 = newSmokeSystem(x, y, "assets/Particles/p_particle_03.png")
-    smokestack.smoke04 = newSmokeSystem(x, y, "assets/Particles/p_particle_04.png")
-    smokestack.smoke05 = newSmokeSystem(x, y, "assets/Particles/p_particle_05.png")
-    smokestack.smoke06 = newSmokeSystem(x, y, "assets/Particles/p_particle_06.png")
-    smokestack.smoke07 = newSmokeSystem(x, y, "assets/Particles/p_particle_07.png")
-end		
+local M = {}
 
 function M.newSmokeSystem(x, y, path)
     smoke = {}
@@ -34,6 +26,26 @@ function M.newSmokeSystem(x, y, path)
     return smoke
 end
 
+local function newSmokestack(train)
+	local pos = TileMath.tilePosCenter(train.levelPos.x, train.levelPos.y)
+	local x, y = pos.x, pos.y
+	local smokestack = {}
+
+	smokestack.train = train
+	smokestack.smokes = {}
+	smokestack.smokes.smoke01 = M.newSmokeSystem(x, y, "assets/Particles/p_particle_01.png")
+    smokestack.smokes.smoke02 = M.newSmokeSystem(x, y, "assets/Particles/p_particle_02.png")
+    smokestack.smokes.smoke03 = M.newSmokeSystem(x, y, "assets/Particles/p_particle_03.png")
+    smokestack.smokes.smoke04 = M.newSmokeSystem(x, y, "assets/Particles/p_particle_04.png")
+    smokestack.smokes.smoke05 = M.newSmokeSystem(x, y, "assets/Particles/p_particle_05.png")
+    smokestack.smokes.smoke06 = M.newSmokeSystem(x, y, "assets/Particles/p_particle_06.png")
+    smokestack.smokes.smoke07 = M.newSmokeSystem(x, y, "assets/Particles/p_particle_07.png")
+
+	return smokestack
+end		
+
+M.newSmokestack = newSmokestack
+
 function M.updateSmokeSystem(smoke,dt)
     if smoke.psystem:getCount() == 0 then
         smoke.psystem:start()
@@ -46,9 +58,11 @@ function M.updateSmokeSystem(smoke,dt)
 end
 
 function M.renderSmokestack(smokestack)
-		for key, val in pairs(smokestack) do
-				local x,y = val.psystem:getPosition()
-				love.graphics.draw(val.psystem,x,y)
+		for key, val in pairs(smokestack.smokes) do
+				if not key == "train" then 
+					local x,y = val.psystem:getPosition()
+					love.graphics.draw(val.psystem,x,y)
+				end
 		end
 end		
 
