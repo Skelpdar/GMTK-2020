@@ -84,13 +84,19 @@ function M.loadPropSprites()
     M.prop_sprites.paprica = love.graphics.newImage("assets/props/paprica.png")
 end		
 
+ToggledSprite = love.graphics.newImage("assets/Toggled.png")
+
 -- Takes a tracks tileset as in the above example and renders it
-function M.drawRails(tiles)
+function M.drawRails(tiles, switches)
     for x, column in pairs(tiles) do
         for y, tile in pairs(column) do
             if tile ~= 0 then
                 local pos = TileMath.tilePos(x, y)
                 love.graphics.draw(M.rail_sprites[tile], pos.x, pos.y)
+
+                if switches[x][y] == 1 then
+                    love.graphics.draw(ToggledSprite, pos.x, pos.y)
+                end
             end		
         end		
     end

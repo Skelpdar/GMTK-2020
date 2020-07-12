@@ -124,8 +124,8 @@ function love.draw()
 
     --SetCameraPosition(love, -Camera_x, -Camera_y)
 
-    Tiles.drawRails(G_OutLevel.tiles)
-    Tiles.drawRails(G_Level.tiles)
+    Tiles.drawRails(G_OutLevel.tiles, G_OutLevel.switches)
+    Tiles.drawRails(G_Level.tiles, G_Level.switches)
 
     for i, column in pairs(G_Level.trains) do
         for j, train in pairs(column) do
@@ -248,14 +248,22 @@ function love.mousepressed(x, y, button)
             G_OutLevel.tiles[G_MousePos.x][G_MousePos.y] =
                 G_Level.tileIndicies[G_Level.selectedTile]
             
-            G_OutLevel.switches[G_MousePos.x][G_MousePos.y] =
-                Tiles.switchMapping[G_Level.tileIndicies[G_Level.selectedTile]]
+            G_OutLevel.switches[G_MousePos.x][G_MousePos.y] = 0
 
         elseif EditMode[G_Editing] == EditMode.Trains then
             G_OutLevel.trains[G_MousePos.x][G_MousePos.y] =
                 Trains.createTrain(
                     G_CurrentTile, G_Direction, 1,
                     TrainTypeNames[G_TrainType])
+        
+        elseif EditMode[G_Editing] == EditMode.Toggles then
+            if G_OutLevel.tiles[G_MousePos.x][G_MousePos.y] ~= 0 then
+                if G_OutLevel.switches[G_MousePos.x][G_MousePos.y] == 0 then
+                    G_OutLevel.switches[G_MousePos.x][G_MousePos.y] = 1
+                else
+                    G_OutLevel.switches[G_MousePos.x][G_MousePos.y] = 0
+                end
+            end
         end
 
     elseif button == 2 then
@@ -302,6 +310,10 @@ function Serialise(level)
                     level.trains[x][y].direction .. ", speed = " ..
                     level.trains[x][y].speed .. ", trainType = \"" ..
                     level.trains[x][y].trainType .. "\"}"
+            end
+
+            if  level.switches[x][y] == 1 then
+                line = line .. ", toggled = true"
             end
 
             line = line .. "}, "
