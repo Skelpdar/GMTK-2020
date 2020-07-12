@@ -52,7 +52,7 @@ local function loadLevel(name, reloading)
         for x = 1, levelDescription.width, 1 do
             level.switches[x]   = {}
             level.tiles[x]      = {}
-            for y = 1, levelDescription.height, 1 do
+			for y = 1, levelDescription.height, 1 do
                 local rail = levelDescription.rails[y][x]
 
                 if type(rail.id) ~= "table" then

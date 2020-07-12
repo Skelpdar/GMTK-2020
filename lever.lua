@@ -15,6 +15,8 @@ local directionMapping = {
 	[136] = {6,1},
 	[134] = {3,4},
 	[146] = {1,6},
+	[245] = {5, 4},
+	[256] = {5, 6},
 	[346] = {3,4}
 }		
 
@@ -35,7 +37,6 @@ local function createLever(level,x,y,railType,railx, raily, state)
 
 	lever.button = LoveFrames.Create("imagebutton")
 	lever.button:SetImage(M.sprites[directionMapping[railType][state]])
-    print(directionMapping[railType][1])
 	lever.button:SetText("")
 	--button:Center()
 	local worldpos = TileMath.tilePosCenter(railx,raily)
