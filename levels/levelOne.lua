@@ -31,7 +31,7 @@ world.dialogue = {} --[[{{love.graphics.newImage("assets/UI/ui_textbox_01.png"),
 --Where cargo should land, delivered becomes true when a box lands on it				
 world.targets = {{x = 12, y = 10, delivered=false}}
 
-world.nextlevel = "levels/mainmenu"
+world.nextlevel = "levels/twoengines"
 
 world.props = {{image = love.graphics.newImage("assets/PropExposedPipe.png"), x = 30, y = 70},
 {image = love.graphics.newImage("assets/PropShroomGuy.png"), x = 130, y = 100},

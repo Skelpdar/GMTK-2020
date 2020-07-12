@@ -14,7 +14,7 @@ world.rails = {{{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id 
 {{id = 0}, {id = 0}, {id = 0}, {id = 14}, {id = 0}, {id = 36}, {id = 0}, {id = 0}, {id = 46}, {id = 0}, {id = 0}, {id = 0}, {id = 134, hasLever = true}, {id = 0}, {id = 13}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 14}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 15}, {id = 25}, {id = 25}, {id = 26}, {id = 15}, {id = 26}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 1346}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
-{{id = 0}, {id = 0}, {id = 0}, {id = 36}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
+{{id = 0}, {id = 0}, {id = 0}, {id = 36, train = {speed = 1000000, trainType = "barrier"}}, {id = 14, train = {speed = 1000000, trainType = "barrier"}}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 {{id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, {id = 0}, },
 }
 
@@ -25,6 +25,8 @@ world.targets = {{x=6, y=13, delivered=false}}
 
 world.dialogue = {}
 
-world.props = {}
+world.props = {
+    {image = love.graphics.newImage("assets/landing.png"), x = 150, y = 310},
+}
 
 return world
