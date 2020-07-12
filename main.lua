@@ -44,7 +44,8 @@ local function loadLevel(name, reloading)
         level.switches  = {}
         level.tiles     = {}
         level.trains    = {}
-		level.levers    = {}
+        level.levers    = {}
+        level.props     = levelDescription.props
 
 		if levelDescription.targets then
 			level.targets   = levelDescription.targets
@@ -248,6 +249,10 @@ function love.draw()
 
     for key, train in pairs(G_Level.trains) do
         Trains.drawTrain(train)
+    end
+
+    for key, prop in pairs(G_Level.props) do
+        love.graphics.draw(prop.image, prop.x, prop.y)
     end
 
 	Boxes.drawBoxes()

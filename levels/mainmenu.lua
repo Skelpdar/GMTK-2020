@@ -28,4 +28,6 @@ world.dialogue = {{love.graphics.newImage("assets/Empty.png"), " ", " "}}
 
 world.nextlevel = "levels/levelOne"
 
+world.props = {}
+
 return world

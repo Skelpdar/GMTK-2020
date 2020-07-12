@@ -25,4 +25,6 @@ world.height = 13
 
 world.targets = {{x=1, y=9, delivered=false}}
 
+world.props = {}
+
 return world

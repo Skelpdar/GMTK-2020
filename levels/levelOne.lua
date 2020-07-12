@@ -33,4 +33,9 @@ world.targets = {{x = 11, y = 10, delivered=false}}
 
 world.nextlevel = "levels/mainmenu"
 
+world.props = {{image = love.graphics.newImage("assets/PropExposedPipe.png"), x = 30, y = 70},
+{image = love.graphics.newImage("assets/PropShroomGuy.png"), x = 130, y = 100},
+{image = love.graphics.newImage("assets/PropLargeExposedPipe.png"), x = 500, y = 100},
+}
+
 return world

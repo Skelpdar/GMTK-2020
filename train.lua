@@ -14,13 +14,13 @@ local function createTrain(levelPos, direction, speed, trainType)
         speed = speed or 1, ticks = 0,
         sprites = {
             [TileMath.direction.UpLeft] = 
-                love.graphics.newImage("assets/Train14.png"),
+                love.graphics.newImage("assets/Train41.png"),
 
             [TileMath.direction.Left] = 
-                love.graphics.newImage("assets/Train25.png"),
+                love.graphics.newImage("assets/Train52.png"),
 
             [TileMath.direction.DownLeft] = 
-                love.graphics.newImage("assets/Train26.png"),
+                love.graphics.newImage("assets/Train63.png"),
 
             [TileMath.direction.DownRight] = 
                 love.graphics.newImage("assets/Train14.png"),
@@ -29,7 +29,7 @@ local function createTrain(levelPos, direction, speed, trainType)
                 love.graphics.newImage("assets/Train25.png"),
 
             [TileMath.direction.UpRight] = 
-                love.graphics.newImage("assets/Train26.png"),
+                love.graphics.newImage("assets/Train36.png"),
         }
     }
 	if train.trainType == "wagon" then
